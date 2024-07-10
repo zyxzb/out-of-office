@@ -1,10 +1,12 @@
+import DashboardCards from '../ui/DashboardCards';
 import Heading from '../ui/Heading';
 
 const Dashboard = () => {
   return (
-    <div>
+    <>
       <Heading as='h1'>Dashboard</Heading>
-    </div>
+      <DashboardCards />
+    </>
   );
 };
 

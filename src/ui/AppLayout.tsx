@@ -8,7 +8,7 @@ const AppLayout = () => {
     <div className='font-sono grid h-screen grid-cols-[20rem_1fr] grid-rows-[auto_1fr] bg-white transition-colors dark:bg-black dark:text-white'>
       <Header />
       <Aside />
-      <main className='overflow-y-auto px-5 py-10'>
+      <main className='flex flex-col gap-4 overflow-y-auto px-5 py-10'>
         <Outlet />
       </main>
     </div>
