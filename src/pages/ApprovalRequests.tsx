@@ -1,10 +1,14 @@
+import ApprovalRequestTable from '../features/ApprovalRequests/ApprovalRequestTable';
+import NewApprovalRequest from '../features/ApprovalRequests/NewApprovalRequest';
 import Heading from '../ui/Heading';
 
 const ApprovalRequests = () => {
   return (
-    <div>
+    <>
       <Heading as='h1'>ApprovalRequests</Heading>
-    </div>
+      <ApprovalRequestTable />
+      <NewApprovalRequest />
+    </>
   );
 };
 

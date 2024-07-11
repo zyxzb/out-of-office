@@ -1,10 +1,14 @@
+import NewApprovalRequest from '../features/ApprovalRequests/NewApprovalRequest';
+import LeaveRequestTable from '../features/LeaveRequests/LeaveRequestTable';
 import Heading from '../ui/Heading';
 
 const LeaveRequests = () => {
   return (
-    <div>
-      <Heading as='h1'>LeaveRequests</Heading>
-    </div>
+    <>
+      <Heading as='h1'>Leave Requests</Heading>
+      <LeaveRequestTable />
+      <NewApprovalRequest />
+    </>
   );
 };
 

@@ -30,14 +30,11 @@ export async function getEmployees(): Promise<Employee[]> {
     throw new Error('Employees could not be loaded');
   }
 
-  console.log(data);
-
   // eslint-disable-next-line @typescript-eslint/no-explicit-any
   const employees = data.map((employee: any) => ({
     ...employee,
     people_partner: employee.people_partner.full_name,
   }));
-  console.log(employees);
 
   return employees as Employee[];
 }
@@ -46,7 +43,8 @@ export async function getEmployeeById(id: number): Promise<Employee[]> {
   const { data, error } = await supabase
     .from('Employees')
     .select('*')
-    .eq('id', id);
+    .eq('id', id)
+    .single();
 
   if (error) {
     console.log(error);
