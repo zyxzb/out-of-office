@@ -9,7 +9,7 @@ const useCreateLeaveRequest = () => {
   const { mutate: createLeaveRequest, isPending: isCreating } = useMutation({
     mutationFn: (data) => createEditRequest(data),
     onSuccess: () => {
-      toast.success(`Cabin successfully added`);
+      toast.success(`LeaveRequest successfully added`);
       queryClient.invalidateQueries({
         queryKey: ['leaveRequest'],
       });

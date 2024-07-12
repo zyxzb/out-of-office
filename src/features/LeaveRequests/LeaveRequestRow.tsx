@@ -34,7 +34,6 @@ const LeaveRequestRow = ({
         <Menus.Toggle id={requestId} />
         <Menus.List id={requestId}>
           <Menus.Button icon={<HiEye />}>See details</Menus.Button>
-          <Menus.Button icon={<HiEye />}>See details</Menus.Button>
         </Menus.List>
       </Menus>
     </Table.Row>

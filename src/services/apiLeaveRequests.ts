@@ -50,17 +50,14 @@ export async function createEditRequest(leaveRequests: any, id?: number) {
 
   // 1. Create/edit cabin
 
+  console.log('leaveRequests --->', leaveRequests);
+
   let query;
 
   // A) CREATE
 
   if (!id) {
-    query = supabase.from('LeaveRequests').insert([
-      {
-        ...leaveRequests,
-        // image: imagePath
-      },
-    ]);
+    query = supabase.from('LeaveRequests').insert(leaveRequests);
   }
 
   // B) EDIT
