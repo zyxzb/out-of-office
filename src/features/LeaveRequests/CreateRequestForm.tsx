@@ -6,6 +6,7 @@ import toast from 'react-hot-toast';
 
 import SelectEmployee from './SelectEmployee';
 import useCreateLeaveRequest from './useCreateLeaveRequest';
+import { LeaveRequest } from '../../services/apiLeaveRequests';
 import { Button } from '../../shadcn/components/ui/button';
 import { Calendar } from '../../shadcn/components/ui/calendar';
 import { Input } from '../../shadcn/components/ui/input';
@@ -16,13 +17,6 @@ import {
 } from '../../shadcn/components/ui/popover';
 import { cn } from '../../shadcn/lib/utils';
 import FormRow from '../../ui/FormRow';
-
-type FormValues = {
-  employee: number;
-  absence_reason: string;
-  comment: string;
-  status: string;
-};
 
 const CreateRequestForm = () => {
   const { createLeaveRequest, isCreating } = useCreateLeaveRequest();
@@ -36,9 +30,9 @@ const CreateRequestForm = () => {
     formState: { errors },
     // setValue,
     // getValues,
-  } = useForm<FormValues>();
+  } = useForm<LeaveRequest>();
 
-  const onSubmit: SubmitHandler<FormValues> = (data) => {
+  const onSubmit: SubmitHandler<LeaveRequest> = (data) => {
     if (!startDate || !endDate) return toast.error('Please select the dates');
 
     const request = {

@@ -1,9 +1,9 @@
 import supabase from './supabase'; // { supabaseUrl }
 
 export type LeaveRequest = {
-  id: number;
-  created_at: Date;
-  employee: string;
+  id?: number;
+  created_at?: Date;
+  employee: number;
   absence_reason: string;
   start_date: Date;
   end_date: Date;
