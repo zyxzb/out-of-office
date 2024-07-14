@@ -158,7 +158,7 @@ const CreateRequestForm = () => {
         <Input
           id='comment'
           className='dark:bg-black'
-          {...register('comment', { required: 'Start Date is required' })}
+          {...register('comment', { required: 'Comment is required' })}
         />
       </FormRow>
 
