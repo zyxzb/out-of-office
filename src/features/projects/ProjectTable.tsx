@@ -9,7 +9,7 @@ const ProjectTable = () => {
 
   if (isError) return <p>{error?.message}</p>;
 
-  if (!projects) return <p>No employees to show</p>;
+  if (!projects) return <p>No projects to show</p>;
 
   return (
     <Table columns='grid-cols-8'>

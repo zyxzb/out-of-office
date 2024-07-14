@@ -1,8 +1,6 @@
 import { format } from 'date-fns';
 import { Calendar as CalendarIcon } from 'lucide-react';
-import { useState } from 'react';
-import { useForm, SubmitHandler } from 'react-hook-form';
-import toast from 'react-hot-toast';
+import { useForm, SubmitHandler, Controller } from 'react-hook-form';
 
 import SelectEmployee from './SelectEmployee';
 import useCreateLeaveRequest from './useCreateLeaveRequest';
@@ -20,45 +18,44 @@ import FormRow from '../../ui/FormRow';
 
 const CreateRequestForm = () => {
   const { createLeaveRequest, isCreating } = useCreateLeaveRequest();
-  const [startDate, setStartDate] = useState<Date | undefined>();
-  const [endDate, setEndDate] = useState<Date | undefined>();
-  const [selectedItem, setSelectedItem] = useState('');
 
   const {
     register,
     handleSubmit,
     formState: { errors },
-    // setValue,
-    // getValues,
-  } = useForm<LeaveRequest>();
+    control,
+  } = useForm<LeaveRequest>({
+    defaultValues: {
+      employee: undefined,
+      absence_reason: '',
+      comment: '',
+      status: 'new',
+      start_date: undefined,
+      end_date: undefined,
+    },
+  });
 
   const onSubmit: SubmitHandler<LeaveRequest> = (data) => {
-    if (!startDate || !endDate) return toast.error('Please select the dates');
-
-    const request = {
-      ...data,
-      employee: 1,
-      status: 'new',
-      start_date: startDate,
-      end_date: endDate,
-    };
-
-    createLeaveRequest(request);
+    createLeaveRequest(data);
   };
 
   return (
     <form onSubmit={handleSubmit(onSubmit)} className='flex flex-col gap-4'>
-      <FormRow label='Employee Name' error={errors?.employee?.message}>
-        <Input
-          id='employee'
-          className='dark:bg-black'
-          {...register('employee', { required: 'Employee Name is required' })}
-        />
-      </FormRow>
-
-      <SelectEmployee
-        selectedItem={selectedItem}
-        setSelectedItem={setSelectedItem}
+      <Controller
+        name='employee'
+        control={control}
+        rules={{ required: 'Employee selection is required' }}
+        render={({ field, fieldState: { error } }) => (
+          <div>
+            <SelectEmployee
+              selectedItem={field.value}
+              setSelectedItem={(item) => field.onChange(Number(item))}
+            />
+            {error && (
+              <span className='text-xs text-red-500'>{error.message}</span>
+            )}
+          </div>
+        )}
       />
 
       <FormRow label='Absence reason' error={errors?.absence_reason?.message}>
@@ -73,59 +70,89 @@ const CreateRequestForm = () => {
 
       {/* Start Date */}
 
-      <Popover>
-        <PopoverTrigger asChild>
-          <Button
-            variant={'outline'}
-            className={cn(
-              'w-[280px] justify-start text-left font-normal dark:bg-black',
-              !startDate && 'text-muted-foreground',
-            )}
-          >
-            <CalendarIcon className='mr-2 h-4 w-4' />
-            {startDate ? (
-              format(startDate, 'PPP')
-            ) : (
-              <span>Pick a start date</span>
-            )}
-          </Button>
-        </PopoverTrigger>
-        <PopoverContent className='w-auto p-0'>
-          <Calendar
-            mode='single'
-            id='start_date'
-            selected={startDate}
-            onSelect={setStartDate}
-            className='rounded-md border shadow dark:bg-black'
-          />
-        </PopoverContent>
-      </Popover>
+      <div className='flex flex-col gap-2'>
+        <Controller
+          name='start_date'
+          control={control}
+          rules={{ required: 'Start Date is required' }}
+          render={({ field }) => (
+            <Popover>
+              <PopoverTrigger asChild>
+                <Button
+                  variant='outline'
+                  className={cn(
+                    'w-[280px] justify-start text-left font-normal dark:bg-black',
+                    !field.value && 'text-muted-foreground',
+                  )}
+                >
+                  <CalendarIcon className='mr-2 h-4 w-4' />
+                  {field.value ? (
+                    format(field.value, 'PPP')
+                  ) : (
+                    <span>Pick a start date</span>
+                  )}
+                </Button>
+              </PopoverTrigger>
+              <PopoverContent className='w-auto p-0'>
+                <Calendar
+                  mode='single'
+                  selected={field.value}
+                  onSelect={field.onChange}
+                  className='rounded-md border shadow dark:bg-black'
+                />
+              </PopoverContent>
+            </Popover>
+          )}
+        />
+        {errors.start_date && (
+          <span className='text-xs text-red-500'>
+            {errors.start_date.message}
+          </span>
+        )}
+      </div>
 
       {/* End Date */}
 
-      <Popover>
-        <PopoverTrigger asChild>
-          <Button
-            variant={'outline'}
-            className={cn(
-              'w-[280px] justify-start text-left font-normal dark:bg-black',
-              !endDate && 'text-muted-foreground',
-            )}
-          >
-            <CalendarIcon className='mr-2 h-4 w-4' />
-            {endDate ? format(endDate, 'PPP') : <span>Pick an end date</span>}
-          </Button>
-        </PopoverTrigger>
-        <PopoverContent className='w-auto p-0'>
-          <Calendar
-            mode='single'
-            id='start_date'
-            selected={endDate}
-            onSelect={setEndDate}
-            className='rounded-md border shadow dark:bg-black'
-          />
-        </PopoverContent>
-      </Popover>
+      <div className='flex flex-col gap-2'>
+        <Controller
+          name='end_date'
+          control={control}
+          rules={{ required: 'End Date is required' }}
+          render={({ field }) => (
+            <Popover>
+              <PopoverTrigger asChild>
+                <Button
+                  variant='outline'
+                  className={cn(
+                    'w-[280px] justify-start text-left font-normal dark:bg-black',
+                    !field.value && 'text-muted-foreground',
+                  )}
+                >
+                  <CalendarIcon className='mr-2 h-4 w-4' />
+                  {field.value ? (
+                    format(field.value, 'PPP')
+                  ) : (
+                    <span>Pick an end date</span>
+                  )}
+                </Button>
+              </PopoverTrigger>
+              <PopoverContent className='w-auto p-0'>
+                <Calendar
+                  mode='single'
+                  selected={field.value}
+                  onSelect={field.onChange}
+                  className='rounded-md border shadow dark:bg-black'
+                />
+              </PopoverContent>
+            </Popover>
+          )}
+        />
+        {errors.end_date && (
+          <span className='text-xs text-red-500'>
+            {errors.end_date.message}
+          </span>
+        )}
+      </div>
 
       <FormRow label='Comment' error={errors?.comment?.message}>
         <Input
