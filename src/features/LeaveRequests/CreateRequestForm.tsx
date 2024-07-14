@@ -61,7 +61,6 @@ const CreateRequestForm = () => {
       <FormRow label='Absence reason' error={errors?.absence_reason?.message}>
         <Input
           id='Absence reason'
-          className='dark:bg-black'
           {...register('absence_reason', {
             required: 'Absence reason is required',
           })}
@@ -157,7 +156,6 @@ const CreateRequestForm = () => {
       <FormRow label='Comment' error={errors?.comment?.message}>
         <Input
           id='comment'
-          className='dark:bg-black'
           {...register('comment', { required: 'Comment is required' })}
         />
       </FormRow>

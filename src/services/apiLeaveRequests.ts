@@ -37,6 +37,20 @@ export async function getRequests(): Promise<LeaveRequest[]> {
   return requests as LeaveRequest[];
 }
 
+export async function deleteLeaveRequest(id: number) {
+  const { data, error } = await supabase
+    .from('LeaveRequests')
+    .delete()
+    .eq('id', id);
+
+  if (error) {
+    console.log(error);
+    throw new Error('LeaveRequests could not be deleted');
+  }
+
+  return data;
+}
+
 // eslint-disable-next-line @typescript-eslint/no-explicit-any
 export async function createEditRequest(leaveRequests: any, id?: number) {
   // const hasImagePath = newCabin.image?.startsWith?.(supabaseUrl);
