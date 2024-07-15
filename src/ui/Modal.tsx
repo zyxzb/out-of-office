@@ -16,7 +16,7 @@ const Modal = ({ children }: ModalProps) => {
   return (
     <Dialog>
       <DialogTrigger asChild>{children}</DialogTrigger>
-      <DialogContent className='font-sono flex flex-col gap-8 dark:bg-black'>
+      <DialogContent className='flex flex-col gap-8 dark:bg-black'>
         <DialogHeader>
           <DialogTitle>Leave Request</DialogTitle>
           <DialogDescription>

@@ -96,7 +96,7 @@ const List = ({ id, children }: ListProps) => {
 
   return createPortal(
     <ul
-      className='text:white fixed border bg-white p-2 font-sono dark:bg-black'
+      className='text:white fixed border bg-white p-2 dark:bg-black'
       style={{ right: position?.x, top: position?.y }}
       ref={ref}
     >

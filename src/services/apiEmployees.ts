@@ -6,7 +6,7 @@ export type Employee = {
   full_name: string;
   subdivision: string;
   position: string;
-  status: number;
+  status: string;
   people_partner: string;
   photo?: string;
   out_of_office_balance: number;

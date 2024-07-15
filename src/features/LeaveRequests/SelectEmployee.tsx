@@ -37,7 +37,7 @@ const SelectEmployee = ({
       <SelectTrigger className='w-[280px] dark:bg-black'>
         <SelectValue placeholder='Select an Employee' />
       </SelectTrigger>
-      <SelectContent className='font-sono dark:bg-black'>
+      <SelectContent className='dark:bg-black'>
         <SelectGroup>
           <SelectLabel>Employees:</SelectLabel>
           {employees.map((employee) => (

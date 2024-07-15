@@ -52,7 +52,7 @@ const LeaveRequestRow = ({
       <div>
         <DropdownMenu>
           <DropdownMenuTrigger asChild>
-            <Button variant='ghost' className='h-8 w-8 p-0'>
+            <Button className='h-8 w-8 p-0'>
               <HiMiniEllipsisVertical />
             </Button>
           </DropdownMenuTrigger>

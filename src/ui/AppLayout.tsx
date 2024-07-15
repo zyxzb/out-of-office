@@ -5,7 +5,7 @@ import Header from './Header';
 
 const AppLayout = () => {
   return (
-    <div className='font-sono grid h-screen grid-cols-[20rem_1fr] grid-rows-[auto_1fr] bg-white transition-colors dark:bg-black dark:text-white'>
+    <div className='grid h-screen grid-cols-[20rem_1fr] grid-rows-[auto_1fr] bg-white transition-colors dark:bg-black dark:text-white'>
       <Header />
       <Aside />
       <main className='flex flex-col gap-4 overflow-y-auto px-5 py-10'>
