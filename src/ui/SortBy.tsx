@@ -28,10 +28,10 @@ const SortBy = ({ options }: SortByProps) => {
   };
   return (
     <Select value={sortByValue} onValueChange={handleChange}>
-      <SelectTrigger className='w-[300px] transition-all dark:bg-black'>
+      <SelectTrigger className='w-[300px] transition-all'>
         <SelectValue placeholder='Sort By' />
       </SelectTrigger>
-      <SelectContent className='dark:bg-black'>
+      <SelectContent>
         <SelectGroup>
           <SelectLabel>Sort By:</SelectLabel>
           {options.map((option) => (

@@ -27,19 +27,38 @@ const EmployeeTable = () => {
 
   if (!employees) return <p>No employees to show</p>;
 
+  const filterStatus = searchParams.get('status') || 'all';
+  const searchValue = searchParams.get('searchValue') || '';
+  const searchHeader = searchParams.get('searchHeader') || 'full_name';
+
   // 1. Filter
 
-  const filterValue = searchParams.get('status') || 'all';
+  // manual version
 
-  let filteredEmployees;
+  // const filteredEmployees = employees.filter(
+  //   (employee) =>
+  //     ((filterStatus === 'all' || employee.status === filterStatus) &&
+  //       employee.full_name.toLowerCase().includes(searchValue.toLowerCase())) ||
+  //     employee.id
+  //       .toString()
+  //       .toLowerCase()
+  //       .includes(searchValue.toLowerCase()) ||
+  //     employee.subdivision.toLowerCase().includes(searchValue.toLowerCase()) ||
+  //     employee.position.toLowerCase().includes(searchValue.toLowerCase()) ||
+  //     employee.status.toLowerCase().includes(searchValue.toLowerCase()) ||
+  //     employee.people_partner.toLowerCase().includes(searchValue.toLowerCase()),
+  // );
 
-  if (filterValue === 'all') {
-    filteredEmployees = employees;
-  } else {
-    filteredEmployees = employees.filter(
-      (employee) => employee.status === filterValue,
-    );
-  }
+  const filteredEmployees = employees.filter((employee) => {
+    const matchesFilter =
+      filterStatus === 'all' || employee.status === filterStatus;
+    const matchesSearch =
+      isKeyOfEmployee(searchHeader) &&
+      String(employee[searchHeader])
+        .toLowerCase()
+        .includes(searchValue.toLowerCase());
+    return matchesFilter && matchesSearch;
+  });
 
   // 2. Sort
 
