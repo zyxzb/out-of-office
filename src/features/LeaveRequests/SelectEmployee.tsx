@@ -13,8 +13,8 @@ import {
 import useEmployees from '../employees/useEmployees';
 
 type SelectEmployeeProps = {
-  selectedItem: number;
-  setSelectedItem: (id: number) => void;
+  selectedItem: number | string;
+  setSelectedItem: (id: number | string) => void;
 };
 
 const SelectEmployee = ({

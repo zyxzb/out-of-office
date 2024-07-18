@@ -1,4 +1,5 @@
 import supabase from './supabase';
+import { PAGE_SIZE } from '../utils/constants';
 
 export type Employee = {
   id: number;
@@ -12,8 +13,29 @@ export type Employee = {
   out_of_office_balance: number;
 };
 
-export async function getEmployees(): Promise<Employee[]> {
-  const { data, error } = await supabase.from('Employees').select(`
+export type PaginatedEmployees = {
+  employees: Employee[];
+  count: number | null;
+};
+
+export type SortBy = {
+  field: string;
+  direction: 'asc' | 'desc';
+};
+
+export type Filter = { filterHeader?: string; filterValue?: string | number };
+
+export async function getEmployees({
+  page,
+  sortBy,
+  filter,
+}: {
+  page: number;
+  sortBy?: SortBy;
+  filter?: Filter;
+}): Promise<PaginatedEmployees> {
+  let query = supabase.from('Employees').select(
+    `
       id,
       created_at,
       full_name,
@@ -23,7 +45,27 @@ export async function getEmployees(): Promise<Employee[]> {
       people_partner!inner(full_name),
       photo,
       out_of_office_balance
-    `);
+    `,
+    { count: 'exact' },
+  );
+
+  if (filter && filter.filterHeader && filter.filterValue) {
+    query = query.eq(filter.filterHeader, filter.filterValue);
+  }
+
+  if (sortBy) {
+    query = query.order(sortBy.field, {
+      ascending: sortBy.direction === 'asc',
+    });
+  }
+
+  if (page) {
+    const from = (page - 1) * PAGE_SIZE;
+    const to = from + PAGE_SIZE - 1;
+    query = query.range(from, to);
+  }
+
+  const { data, error, count } = await query;
 
   if (error) {
     console.log(error);
@@ -36,7 +78,7 @@ export async function getEmployees(): Promise<Employee[]> {
     people_partner: employee.people_partner.full_name,
   }));
 
-  return employees as Employee[];
+  return { employees, count };
 }
 
 export async function getEmployeeById(id: number): Promise<Employee[]> {
@@ -52,4 +94,40 @@ export async function getEmployeeById(id: number): Promise<Employee[]> {
   }
 
   return data as Employee[];
+}
+
+export async function createEditEmployee(employee: Employee, id?: number) {
+  console.log('Employee --->', employee);
+
+  let query;
+
+  // A) CREATE
+
+  if (!id) {
+    query = supabase.from('Employees').insert(employee);
+  }
+
+  // B) EDIT
+
+  if (id) {
+    query = supabase
+      .from('Employees')
+      .update({
+        ...employee,
+        // image: imagePath
+      })
+      .eq('id', id)
+      .select();
+  }
+
+  const response = await query;
+
+  // Check if the query was successful
+
+  if (response?.error) {
+    console.error(response.error);
+    throw new Error('Employee could not be created/updated');
+  }
+
+  return response?.data;
 }

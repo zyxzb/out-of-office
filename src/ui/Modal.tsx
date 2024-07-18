@@ -1,4 +1,4 @@
-import CreateRequestForm from '../features/LeaveRequests/CreateRequestForm';
+import { Button } from '../shadcn/components/ui/button';
 import {
   Dialog,
   DialogContent,
@@ -9,22 +9,29 @@ import {
 } from '../shadcn/components/ui/dialog';
 
 type ModalProps = {
+  buttonText: string;
+  dialogTitle: string;
   children: React.ReactNode;
+  dialogDescription: string;
 };
 
-const Modal = ({ children }: ModalProps) => {
+const Modal = ({
+  buttonText,
+  dialogTitle,
+  dialogDescription,
+  children,
+}: ModalProps) => {
   return (
     <Dialog>
-      <DialogTrigger asChild>{children}</DialogTrigger>
+      <DialogTrigger asChild>
+        <Button className='max-w-max'>{buttonText}</Button>
+      </DialogTrigger>
       <DialogContent className='flex flex-col gap-8 dark:bg-black'>
         <DialogHeader>
-          <DialogTitle>Leave Request</DialogTitle>
-          <DialogDescription>
-            This action cannot be undone. This will permanently delete your
-            account and remove your data from our servers.
-          </DialogDescription>
+          <DialogTitle>{dialogTitle}</DialogTitle>
+          <DialogDescription>{dialogDescription}</DialogDescription>
         </DialogHeader>
-        <CreateRequestForm />
+        {children}
       </DialogContent>
     </Dialog>
   );

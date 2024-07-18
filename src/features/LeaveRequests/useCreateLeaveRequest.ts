@@ -14,7 +14,7 @@ const useCreateLeaveRequest = () => {
     onSuccess: () => {
       toast.success(`Request successfully added`);
       queryClient.invalidateQueries({
-        queryKey: ['leaveRequest'],
+        queryKey: ['leaveRequests'],
       });
     },
     onError: (err) => toast.error(err.message),

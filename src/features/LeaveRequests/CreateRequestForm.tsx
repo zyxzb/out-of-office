@@ -23,6 +23,7 @@ const CreateRequestForm = () => {
     register,
     handleSubmit,
     formState: { errors },
+    reset,
     control,
   } = useForm<LeaveRequest>({
     defaultValues: {
@@ -36,7 +37,11 @@ const CreateRequestForm = () => {
   });
 
   const onSubmit: SubmitHandler<LeaveRequest> = (data) => {
-    createLeaveRequest(data);
+    createLeaveRequest(data, {
+      onSuccess: () => {
+        reset();
+      },
+    });
   };
 
   return (

@@ -20,3 +20,5 @@ export const navLinks = [
     link: '/approval-requests',
   },
 ];
+
+export const PAGE_SIZE = 5;

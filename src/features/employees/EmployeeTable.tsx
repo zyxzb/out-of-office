@@ -1,25 +1,28 @@
-import { useSearchParams } from 'react-router-dom';
+// commented old version of filter and sort
+
+// import { useSearchParams } from 'react-router-dom';
 
 import EmployeeRow from './EmployeeRow';
 import useEmployees from './useEmployees';
-import { Employee } from '../../services/apiEmployees';
+// import { Employee } from '../../services/apiEmployees';
+import Pagination from '../../ui/Pagination';
 import Table from '../../ui/Table';
 
-function isKeyOfEmployee(key: string): key is keyof Employee {
-  return [
-    'id',
-    'full_name',
-    'subdivision',
-    'position',
-    'status',
-    'people_partner',
-    'out_of_office_balance',
-  ].includes(key);
-}
+// function isKeyOfEmployee(key: string): key is keyof Employee {
+//   return [
+//     'id',
+//     'full_name',
+//     'subdivision',
+//     'position',
+//     'status',
+//     'people_partner',
+//     'out_of_office_balance',
+//   ].includes(key);
+// }
 
 const EmployeeTable = () => {
-  const { employees, isLoading, isError, error } = useEmployees();
-  const [searchParams] = useSearchParams();
+  const { employees, isLoading, isError, error, count } = useEmployees();
+  // const [searchParams] = useSearchParams();
 
   if (isLoading) return <p>Loading...</p>;
 
@@ -27,9 +30,9 @@ const EmployeeTable = () => {
 
   if (!employees) return <p>No employees to show</p>;
 
-  const filterStatus = searchParams.get('status') || 'all';
-  const searchValue = searchParams.get('searchValue') || '';
-  const searchHeader = searchParams.get('searchHeader') || 'full_name';
+  // const filterStatus = searchParams.get('status') || 'all';
+  // const searchValue = searchParams.get('searchValue') || '';
+  // const searchHeader = searchParams.get('searchHeader') || 'full_name';
 
   // 1. Filter
 
@@ -49,54 +52,58 @@ const EmployeeTable = () => {
   //     employee.people_partner.toLowerCase().includes(searchValue.toLowerCase()),
   // );
 
-  const filteredEmployees = employees.filter((employee) => {
-    const matchesFilter =
-      filterStatus === 'all' || employee.status === filterStatus;
-    const matchesSearch =
-      isKeyOfEmployee(searchHeader) &&
-      String(employee[searchHeader])
-        .toLowerCase()
-        .includes(searchValue.toLowerCase());
-    return matchesFilter && matchesSearch;
-  });
+  // const filteredEmployees = employees.filter((employee) => {
+  //   const matchesFilter =
+  //     filterStatus === 'all' || employee.status === filterStatus;
+  //   const matchesSearch =
+  //     isKeyOfEmployee(searchHeader) &&
+  //     String(employee[searchHeader])
+  //       .toLowerCase()
+  //       .includes(searchValue.toLowerCase());
+  //   return matchesFilter && matchesSearch;
+  // });
 
   // 2. Sort
 
-  const sortBy = searchParams.get('sortBy') || 'id-asc';
-  const [field, direction] = sortBy.split('-');
-  const modifier = direction === 'asc' ? 1 : -1;
+  // const sortBy = searchParams.get('sortBy') || 'id-asc';
+  // const [field, direction] = sortBy.split('-');
+  // const modifier = direction === 'asc' ? 1 : -1;
 
-  let sortedEmployees = filteredEmployees;
+  // let sortedEmployees = filteredEmployees;
 
-  if (isKeyOfEmployee(field)) {
-    sortedEmployees = filteredEmployees.sort((a, b) => {
-      if (typeof a[field] === 'string' && typeof b[field] === 'string') {
-        return a[field].localeCompare(b[field]) * modifier;
-      } else if (typeof a[field] === 'number' && typeof b[field] === 'number') {
-        return (a[field] - b[field]) * modifier;
-      }
-      return 0;
-    });
-  }
+  // if (isKeyOfEmployee(field)) {
+  //   sortedEmployees = filteredEmployees.sort((a, b) => {
+  //     if (typeof a[field] === 'string' && typeof b[field] === 'string') {
+  //       return a[field].localeCompare(b[field]) * modifier;
+  //     } else if (typeof a[field] === 'number' && typeof b[field] === 'number') {
+  //       return (a[field] - b[field]) * modifier;
+  //     }
+  //     return 0;
+  //   });
+  // }
 
   return (
-    <Table columns='grid-cols-8'>
-      <Table.Header>
-        <div>Id</div>
-        <div>Full Name</div>
-        <div>Subdivision</div>
-        <div>Position</div>
-        <div>Status</div>
-        <div>People Partner</div>
-        <div>Available day-offs</div>
-      </Table.Header>
-      <Table.Body
-        data={sortedEmployees}
-        render={(employee) => (
-          <EmployeeRow key={employee.id} employee={employee} />
-        )}
-      />
-    </Table>
+    <>
+      <Table columns='grid-cols-8'>
+        <Table.Header>
+          <div>Id</div>
+          <div>Full Name</div>
+          <div>Subdivision</div>
+          <div>Position</div>
+          <div>Status</div>
+          <div>People Partner</div>
+          <div>Available day-offs</div>
+        </Table.Header>
+        <Table.Body
+          // data={sortedEmployees}
+          data={employees}
+          render={(employee) => (
+            <EmployeeRow key={employee.id} employee={employee} />
+          )}
+        />
+      </Table>
+      <Pagination count={count} />
+    </>
   );
 };
 
