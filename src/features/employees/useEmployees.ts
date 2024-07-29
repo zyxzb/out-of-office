@@ -16,8 +16,13 @@ const useEmployees = () => {
 
   const searchHeader = searchParams.get('searchHeader') || 'full_name';
   const searchValue = searchParams.get('searchValue') || '';
+  const status = searchParams.get('status') || 'all';
 
-  const filter = { filterHeader: searchHeader, filterValue: searchValue };
+  const filter = {
+    filterHeader: searchHeader,
+    filterValue: searchValue,
+    status: status,
+  };
 
   const { data, isLoading, isError, error } = useQuery({
     queryKey: ['employees', page, sortBy, filter],

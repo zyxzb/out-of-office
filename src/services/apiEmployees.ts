@@ -23,7 +23,11 @@ export type SortBy = {
   direction: 'asc' | 'desc';
 };
 
-export type Filter = { filterHeader?: string; filterValue?: string | number };
+export type Filter = {
+  filterHeader?: string;
+  filterValue?: string | number;
+  status?: string;
+};
 
 export async function getEmployees({
   page,
@@ -51,6 +55,11 @@ export async function getEmployees({
 
   if (filter && filter.filterHeader && filter.filterValue) {
     query = query.eq(filter.filterHeader, filter.filterValue);
+  }
+
+  if (filter && filter.status) {
+    if (filter.status === 'all') query;
+    else query = query.eq('status', filter.status);
   }
 
   if (sortBy) {

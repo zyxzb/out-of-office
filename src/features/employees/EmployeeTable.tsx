@@ -7,6 +7,7 @@ import useEmployees from './useEmployees';
 // import { Employee } from '../../services/apiEmployees';
 import Pagination from '../../ui/Pagination';
 import Table from '../../ui/Table';
+import TableSkeleton from '../../ui/TableSkeleton';
 
 // function isKeyOfEmployee(key: string): key is keyof Employee {
 //   return [
@@ -24,7 +25,7 @@ const EmployeeTable = () => {
   const { employees, isLoading, isError, error, count } = useEmployees();
   // const [searchParams] = useSearchParams();
 
-  if (isLoading) return <p>Loading...</p>;
+  if (isLoading) return <TableSkeleton />;
 
   if (isError) return <p>{error?.message}</p>;
 
