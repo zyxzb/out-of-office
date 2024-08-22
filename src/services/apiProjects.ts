@@ -6,9 +6,9 @@ export type Project = {
   project_type: string;
   start_date: Date;
   end_date: Date;
-  project_manager: string;
+  project_manager: number;
   comment: string;
-  status: string;
+  status: 'active' | 'inactive';
 };
 
 export async function getProjects(): Promise<Project[]> {
@@ -35,4 +35,17 @@ export async function getProjects(): Promise<Project[]> {
   }));
 
   return projects as Project[];
+}
+
+export async function createProject(project: Project): Promise<Project> {
+  const { data, error } = await supabase.from('Projects').insert(project);
+
+  if (error) {
+    console.log(error);
+    throw new Error('Projects could not be loaded');
+  }
+
+  console.log(data);
+
+  return data as unknown as Project;
 }

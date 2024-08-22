@@ -2,9 +2,9 @@ import { format } from 'date-fns';
 import { Calendar as CalendarIcon } from 'lucide-react';
 import { useForm, SubmitHandler, Controller } from 'react-hook-form';
 
-import SelectEmployee from './SelectEmployee';
-import useCreateLeaveRequest from './useCreateLeaveRequest';
-import { LeaveRequest } from '../../services/apiLeaveRequests';
+import SelectStatus from './SelectStatus';
+// import useCreateProject from './useCreateProject';
+import { Project } from '../../services/apiProjects';
 import { Button } from '../../shadcn/components/ui/button';
 import { Calendar } from '../../shadcn/components/ui/calendar';
 import { Input } from '../../shadcn/components/ui/input';
@@ -15,65 +15,47 @@ import {
 } from '../../shadcn/components/ui/popover';
 import { cn } from '../../shadcn/lib/utils';
 import FormRow from '../../ui/FormRow';
+import SelectEmployee from '../LeaveRequests/SelectEmployee';
 
-const CreateRequestForm = () => {
-  const { createLeaveRequest, isCreating } = useCreateLeaveRequest();
+const CreateProjectForm = () => {
+  // const { createProject, isCreating } = useCreateProject();
 
+  // fix supabase 401 (Unauthorized) error
   const {
     register,
     handleSubmit,
-    formState: { errors },
-    reset,
     control,
-  } = useForm<LeaveRequest>({
+    formState: { errors },
+    // reset,
+  } = useForm<Project>({
     defaultValues: {
-      employee: undefined,
-      absence_reason: '',
-      comment: '',
-      status: 'new',
+      project_type: '',
       start_date: undefined,
       end_date: undefined,
+      project_manager: undefined,
+      comment: '',
+      status: undefined,
     },
   });
 
-  const onSubmit: SubmitHandler<LeaveRequest> = (data) => {
-    createLeaveRequest(data, {
-      onSuccess: () => {
-        reset();
-      },
-    });
+  const onSubmit: SubmitHandler<Project> = (data) => {
+    // createProject(data, {
+    //   onSuccess: () => {
+    //     // reset();
+    //   },
+    // });
+    console.log(data);
   };
-
   return (
     <form onSubmit={handleSubmit(onSubmit)} className='flex flex-col gap-4'>
-      <Controller
-        name='employee'
-        control={control}
-        rules={{ required: 'Employee selection is required' }}
-        render={({ field, fieldState: { error } }) => (
-          <div>
-            <SelectEmployee
-              selectName='Select an employee'
-              selectedItem={field.value}
-              setSelectedItem={(item) => field.onChange(Number(item))}
-            />
-            {error && (
-              <span className='text-xs text-red-500'>{error.message}</span>
-            )}
-          </div>
-        )}
-      />
-
-      <FormRow label='Absence reason' error={errors?.absence_reason?.message}>
+      <FormRow label='Full name' error={errors?.project_type?.message}>
         <Input
-          id='Absence reason'
-          {...register('absence_reason', {
-            required: 'Absence reason is required',
+          id='project_type'
+          {...register('project_type', {
+            required: 'Project type is required',
           })}
         />
       </FormRow>
-
-      {/* Start Date */}
 
       <div className='flex flex-col gap-2'>
         <Controller
@@ -116,8 +98,6 @@ const CreateRequestForm = () => {
         )}
       </div>
 
-      {/* End Date */}
-
       <div className='flex flex-col gap-2'>
         <Controller
           name='end_date'
@@ -159,18 +139,60 @@ const CreateRequestForm = () => {
         )}
       </div>
 
+      <Controller
+        name='project_manager'
+        control={control}
+        rules={{ required: 'Project Manager selection is required' }}
+        render={({ field, fieldState: { error } }) => (
+          <div>
+            <SelectEmployee
+              selectName='Select Manager'
+              selectedItem={field.value}
+              setSelectedItem={(item) => field.onChange(Number(item))}
+              position='Project Manager'
+            />
+            {error && (
+              <span className='text-xs text-red-500'>{error.message}</span>
+            )}
+          </div>
+        )}
+      />
+
+      <Controller
+        name='status'
+        control={control}
+        rules={{ required: 'Status selection is required' }}
+        render={({ field, fieldState: { error } }) => (
+          <div>
+            <SelectStatus
+              selectedStatus={field.value}
+              setSelectedStatus={(item) => field.onChange(item)}
+            />
+            {error && (
+              <span className='text-xs text-red-500'>{error.message}</span>
+            )}
+          </div>
+        )}
+      />
+
       <FormRow label='Comment' error={errors?.comment?.message}>
         <Input
           id='comment'
-          {...register('comment', { required: 'Comment is required' })}
+          {...register('comment')}
+          className='cursor-pointer hover:opacity-80'
         />
       </FormRow>
 
-      <Button type='submit' className='max-w-max px-10' disabled={isCreating}>
-        {isCreating ? 'Creating...' : 'Create'}
+      <Button
+        type='submit'
+        className='max-w-max px-10'
+        // disabled={isCreating}
+      >
+        {/* {isCreating ? 'Creating...' : 'Create'} */}
+        Sumbmit
       </Button>
     </form>
   );
 };
 
-export default CreateRequestForm;
+export default CreateProjectForm;

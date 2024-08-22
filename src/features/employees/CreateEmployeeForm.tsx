@@ -69,6 +69,7 @@ const CreateEmployeeForm = () => {
         render={({ field, fieldState: { error } }) => (
           <div>
             <SelectEmployee
+              selectName='Select an employee'
               selectedItem={field.value}
               setSelectedItem={(item) => field.onChange(Number(item))}
             />

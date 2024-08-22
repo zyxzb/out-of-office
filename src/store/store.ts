@@ -12,7 +12,11 @@ export type Actions = {
 export const useThemeStore = create<State & Actions>()(
   persist(
     (set, get) => ({
-      theme: 'dark',
+      theme: localStorage.getItem('theme')
+        ? JSON.parse(localStorage.getItem('theme')!).state.theme
+        : window.matchMedia('(prefers-color-scheme: dark)').matches
+          ? 'dark'
+          : 'light',
       setTheme: () =>
         set((state) => ({
           ...state,

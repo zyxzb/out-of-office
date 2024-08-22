@@ -140,3 +140,17 @@ export async function createEditEmployee(employee: Employee, id?: number) {
 
   return response?.data;
 }
+
+export async function getProjectManagers(): Promise<Employee[]> {
+  const { data, error } = await supabase
+    .from('Employees')
+    .select('*')
+    .eq('position', 'Project Manager');
+
+  if (error) {
+    console.log(error);
+    throw new Error('Project Managers could not be loaded');
+  }
+
+  return data as Employee[];
+}

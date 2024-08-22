@@ -6,18 +6,17 @@ const ThemeProvider = ({ children }: { children: React.ReactNode }) => {
   const theme = useThemeStore((store) => store.theme);
 
   useEffect(() => {
-    try {
-      const localTheme = JSON.parse(localStorage.getItem('theme') || '');
-      if (localTheme) {
-        document.documentElement.setAttribute(
-          'data-mode',
-          localTheme.state.theme,
-        );
-        document.documentElement.className = localTheme.state.theme;
-      }
-    } catch (err) {
-      console.log('Error loading the color theme');
-    }
+    document.documentElement.setAttribute('data-mode', theme);
+    document.documentElement.className = theme;
+
+    localStorage.setItem(
+      'theme',
+      JSON.stringify({
+        state: {
+          theme,
+        },
+      }),
+    );
   }, [theme]);
 
   return children;

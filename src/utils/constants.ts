@@ -12,11 +12,11 @@ export const navLinks = [
     link: '/projects',
   },
   {
-    name: 'Leave Requests',
+    name: 'Leave Requests (prośba o pozostawienie)',
     link: '/leave-requests',
   },
   {
-    name: 'Approval Requests',
+    name: 'Approval Requests (prośba o zatwierdzenie)',
     link: '/approval-requests',
   },
 ];

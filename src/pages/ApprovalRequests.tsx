@@ -1,5 +1,4 @@
 import ApprovalRequestTable from '../features/ApprovalRequests/ApprovalRequestTable';
-import NewApprovalRequest from '../features/ApprovalRequests/NewApprovalRequest';
 import Heading from '../ui/Heading';
 
 const ApprovalRequests = () => {
@@ -7,7 +6,6 @@ const ApprovalRequests = () => {
     <>
       <Heading as='h1'>ApprovalRequests</Heading>
       <ApprovalRequestTable />
-      <NewApprovalRequest />
     </>
   );
 };

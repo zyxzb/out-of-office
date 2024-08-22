@@ -15,11 +15,15 @@ import useEmployees from '../employees/useEmployees';
 type SelectEmployeeProps = {
   selectedItem: number | string;
   setSelectedItem: (id: number | string) => void;
+  selectName: string;
+  position?: string;
 };
 
 const SelectEmployee = ({
   selectedItem,
   setSelectedItem,
+  selectName,
+  position,
 }: SelectEmployeeProps) => {
   const { employees, isLoading, isError, error } = useEmployees();
 
@@ -29,18 +33,28 @@ const SelectEmployee = ({
 
   if (!employees) return <p>No employees to show</p>;
 
+  let newEmployees: Array<Employee> = [];
+
+  if (position) {
+    newEmployees = employees.filter(
+      (employee) => employee.position === position,
+    );
+  } else {
+    newEmployees = employees;
+  }
+
   return (
     <Select
       value={selectedItem}
       onValueChange={(value) => setSelectedItem(Number(value))}
     >
       <SelectTrigger className='w-[280px] dark:bg-black'>
-        <SelectValue placeholder='Select an Employee' />
+        <SelectValue placeholder={selectName} />
       </SelectTrigger>
       <SelectContent className='dark:bg-black'>
         <SelectGroup>
           <SelectLabel>Employees:</SelectLabel>
-          {employees.map((employee) => (
+          {newEmployees.map((employee) => (
             <SelectItem key={employee.id} value={employee.id}>
               {`${employee.full_name} - ID: ${employee.id}`}
             </SelectItem>
