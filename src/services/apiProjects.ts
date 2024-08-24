@@ -11,7 +11,7 @@ export type Project = {
   status: 'active' | 'inactive';
 };
 
-export async function getProjects(): Promise<Project[]> {
+export async function getProjects() {
   const { data, error } = await supabase.from('Projects').select(`
       id,
       created_at,
@@ -34,10 +34,10 @@ export async function getProjects(): Promise<Project[]> {
     project_manager: project.project_manager.full_name,
   }));
 
-  return projects as Project[];
+  return projects;
 }
 
-export async function createProject(project: Project): Promise<Project> {
+export async function createProject(project: Project) {
   const { data, error } = await supabase.from('Projects').insert(project);
 
   if (error) {
@@ -47,5 +47,16 @@ export async function createProject(project: Project): Promise<Project> {
 
   console.log(data);
 
-  return data as unknown as Project;
+  return data;
+}
+
+export async function deleteProject(id: number) {
+  const { data, error } = await supabase.from('Projects').delete().eq('id', id);
+
+  if (error) {
+    console.log(error);
+    throw new Error('Project could not be deleted');
+  }
+
+  return data;
 }

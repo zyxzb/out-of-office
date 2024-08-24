@@ -3,7 +3,7 @@ import { Calendar as CalendarIcon } from 'lucide-react';
 import { useForm, SubmitHandler, Controller } from 'react-hook-form';
 
 import SelectStatus from './SelectStatus';
-// import useCreateProject from './useCreateProject';
+import useCreateProject from './useCreateProject';
 import { Project } from '../../services/apiProjects';
 import { Button } from '../../shadcn/components/ui/button';
 import { Calendar } from '../../shadcn/components/ui/calendar';
@@ -18,15 +18,14 @@ import FormRow from '../../ui/FormRow';
 import SelectEmployee from '../LeaveRequests/SelectEmployee';
 
 const CreateProjectForm = () => {
-  // const { createProject, isCreating } = useCreateProject();
+  const { createProject, isCreating } = useCreateProject();
 
-  // fix supabase 401 (Unauthorized) error
   const {
     register,
     handleSubmit,
     control,
     formState: { errors },
-    // reset,
+    reset,
   } = useForm<Project>({
     defaultValues: {
       project_type: '',
@@ -39,11 +38,11 @@ const CreateProjectForm = () => {
   });
 
   const onSubmit: SubmitHandler<Project> = (data) => {
-    // createProject(data, {
-    //   onSuccess: () => {
-    //     // reset();
-    //   },
-    // });
+    createProject(data, {
+      onSuccess: () => {
+        reset();
+      },
+    });
     console.log(data);
   };
   return (
@@ -183,13 +182,8 @@ const CreateProjectForm = () => {
         />
       </FormRow>
 
-      <Button
-        type='submit'
-        className='max-w-max px-10'
-        // disabled={isCreating}
-      >
-        {/* {isCreating ? 'Creating...' : 'Create'} */}
-        Sumbmit
+      <Button type='submit' className='max-w-max px-10' disabled={isCreating}>
+        {isCreating ? 'Creating...' : 'Create'}
       </Button>
     </form>
   );

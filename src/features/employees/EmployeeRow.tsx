@@ -1,7 +1,6 @@
-import { HiEye } from 'react-icons/hi2';
-
+import useDeleteEmployee from './useDeleteEmployee';
 import { Employee } from '../../services/apiEmployees';
-import Menus from '../../ui/Menus';
+import DeleteEditModal from '../../ui/DeleteModal';
 import Table from '../../ui/Table';
 
 type EmployeeRowProps = {
@@ -20,6 +19,8 @@ const EmployeeRow = ({
     out_of_office_balance,
   },
 }: EmployeeRowProps) => {
+  const { isDeleting, deleteEmployee } = useDeleteEmployee();
+
   return (
     <Table.Row>
       <div>{employeeId}</div>
@@ -30,13 +31,13 @@ const EmployeeRow = ({
       <div>{people_partner}</div>
       <div>{out_of_office_balance}</div>
 
-      <Menus>
-        <Menus.Toggle id={employeeId} />
-        <Menus.List id={employeeId}>
-          <Menus.Button icon={<HiEye />}>See details</Menus.Button>
-          <Menus.Button icon={<HiEye />}>See details</Menus.Button>
-        </Menus.List>
-      </Menus>
+      <div>
+        <DeleteEditModal
+          dialogTitle='Delete Employee'
+          isDeleting={isDeleting}
+          onDelete={() => deleteEmployee(employeeId)}
+        />
+      </div>
     </Table.Row>
   );
 };

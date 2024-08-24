@@ -12,7 +12,7 @@ const ProjectTable = () => {
   if (!projects) return <p>No projects to show</p>;
 
   return (
-    <Table columns='grid-cols-8'>
+    <Table columns='grid-cols-9'>
       <Table.Header>
         <div>Id</div>
         <div>Project Type</div>
@@ -21,6 +21,7 @@ const ProjectTable = () => {
         <div>Project Manager</div>
         <div>Comment</div>
         <div>Status</div>
+        <div>Operations</div>
       </Table.Header>
       <Table.Body
         data={projects}

@@ -12,7 +12,8 @@ type ModalProps = {
   buttonText: string;
   dialogTitle: string;
   children: React.ReactNode;
-  dialogDescription: string;
+  dialogDescription?: string;
+  icon?: JSX.Element;
 };
 
 const Modal = ({
@@ -20,11 +21,14 @@ const Modal = ({
   dialogTitle,
   dialogDescription,
   children,
+  icon,
 }: ModalProps) => {
   return (
     <Dialog>
       <DialogTrigger asChild>
-        <Button className='max-w-max'>{buttonText}</Button>
+        <Button className='flex max-w-max gap-1'>
+          {icon} {buttonText}
+        </Button>
       </DialogTrigger>
       <DialogContent className='flex flex-col gap-8 dark:bg-black'>
         <DialogHeader>

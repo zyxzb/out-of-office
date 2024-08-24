@@ -12,9 +12,9 @@ const useCreateProject = () => {
   const { mutate: createProject, isPending: isCreating } = useMutation({
     mutationFn: (data: Project) => createProjectService(data),
     onSuccess: () => {
-      toast.success(`Request successfully added`);
+      toast.success(`Project successfully added`);
       queryClient.invalidateQueries({
-        queryKey: ['leaveRequests'],
+        queryKey: ['projects'],
       });
     },
     onError: (err) => toast.error(err.message),

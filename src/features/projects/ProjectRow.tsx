@@ -1,8 +1,11 @@
 import { format } from 'date-fns';
-import { HiEye } from 'react-icons/hi2';
+import { HiPencil } from 'react-icons/hi2';
 
+import CreateProjectForm from './CreateProjectForm';
+import useDeleteProject from './useDeleteProject';
 import { Project } from '../../services/apiProjects';
-import Menus from '../../ui/Menus';
+import DeleteModal from '../../ui/DeleteModal';
+import Modal from '../../ui/Modal';
 import Table from '../../ui/Table';
 
 type ProjectRowProps = {
@@ -20,6 +23,8 @@ const ProjectRow = ({
     status,
   },
 }: ProjectRowProps) => {
+  const { isDeleting, deleteProject } = useDeleteProject();
+
   return (
     <Table.Row>
       <div>{projectId}</div>
@@ -30,13 +35,20 @@ const ProjectRow = ({
       <div>{comment}</div>
       <div>{status}</div>
 
-      <Menus>
-        <Menus.Toggle id={projectId} />
-        <Menus.List id={projectId}>
-          <Menus.Button icon={<HiEye />}>See details</Menus.Button>
-          <Menus.Button icon={<HiEye />}>See details</Menus.Button>
-        </Menus.List>
-      </Menus>
+      <div className='flex gap-2'>
+        <Modal
+          icon={<HiPencil />}
+          buttonText='Edit'
+          dialogTitle={`Edit Project ${projectId}`}
+        >
+          <CreateProjectForm />
+        </Modal>
+        <DeleteModal
+          dialogTitle={`Delete Project ${projectId}`}
+          onDelete={() => deleteProject(projectId)}
+          isDeleting={isDeleting}
+        />
+      </div>
     </Table.Row>
   );
 };

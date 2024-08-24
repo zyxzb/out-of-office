@@ -37,7 +37,7 @@ export async function getEmployees({
   page: number;
   sortBy?: SortBy;
   filter?: Filter;
-}): Promise<PaginatedEmployees> {
+}) {
   let query = supabase.from('Employees').select(
     `
       id,
@@ -90,7 +90,7 @@ export async function getEmployees({
   return { employees, count };
 }
 
-export async function getEmployeeById(id: number): Promise<Employee[]> {
+export async function getEmployeeById(id: number) {
   const { data, error } = await supabase
     .from('Employees')
     .select('*')
@@ -102,7 +102,7 @@ export async function getEmployeeById(id: number): Promise<Employee[]> {
     throw new Error('Employees could not be loaded');
   }
 
-  return data as Employee[];
+  return data;
 }
 
 export async function createEditEmployee(employee: Employee, id?: number) {
@@ -141,16 +141,16 @@ export async function createEditEmployee(employee: Employee, id?: number) {
   return response?.data;
 }
 
-export async function getProjectManagers(): Promise<Employee[]> {
+export async function deleteEmployee(id: number) {
   const { data, error } = await supabase
     .from('Employees')
-    .select('*')
-    .eq('position', 'Project Manager');
+    .delete()
+    .eq('id', id);
 
   if (error) {
     console.log(error);
-    throw new Error('Project Managers could not be loaded');
+    throw new Error(`Employee could not be deleted ${error.details ?? null}`);
   }
 
-  return data as Employee[];
+  return data;
 }

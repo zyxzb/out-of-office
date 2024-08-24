@@ -1,7 +1,4 @@
-import { HiEye } from 'react-icons/hi2';
-
 import { ApprovalRequest } from '../../services/apiApprovalRequests';
-import Menus from '../../ui/Menus';
 import Table from '../../ui/Table';
 
 type ApprovalRequestProps = {
@@ -24,13 +21,14 @@ const ApprovalRequestRow = ({
       <div>{leave_request}</div>
       <div>{status}</div>
       <div>{comment}</div>
-      <Menus>
+
+      {/* <Menus>
         <Menus.Toggle id={approvalRequestId} />
         <Menus.List id={approvalRequestId}>
           <Menus.Button icon={<HiEye />}>See details</Menus.Button>
           <Menus.Button icon={<HiEye />}>See details</Menus.Button>
         </Menus.List>
-      </Menus>
+      </Menus> */}
     </Table.Row>
   );
 };
