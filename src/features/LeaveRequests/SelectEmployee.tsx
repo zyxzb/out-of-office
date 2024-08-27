@@ -1,6 +1,7 @@
 // eslint-disable-next-line @typescript-eslint/ban-ts-comment
 // @ts-nocheck
 
+import { Employee } from '../../services/apiEmployees';
 import {
   Select,
   SelectContent,
@@ -10,13 +11,15 @@ import {
   SelectTrigger,
   SelectValue,
 } from '../../shadcn/components/ui/select';
-import useEmployees from '../employees/useEmployees';
+import useAllEmployees from '../employees/useAllEmployees';
 
 type SelectEmployeeProps = {
   selectedItem: number | string;
   setSelectedItem: (id: number | string) => void;
   selectName: string;
   position?: string;
+  name?: string;
+  employee?: Employee;
 };
 
 const SelectEmployee = ({
@@ -24,8 +27,9 @@ const SelectEmployee = ({
   setSelectedItem,
   selectName,
   position,
+  employee,
 }: SelectEmployeeProps) => {
-  const { employees, isLoading, isError, error } = useEmployees();
+  const { employees, isLoading, isError, error } = useAllEmployees();
 
   if (isLoading) return <p>Loading...</p>;
 
@@ -33,14 +37,17 @@ const SelectEmployee = ({
 
   if (!employees) return <p>No employees to show</p>;
 
-  let newEmployees: Array<Employee> = [];
+  let newEmployees: Array<Employee> = employees;
+
+  //  can't choose yourself
+  if (employee) {
+    newEmployees = employees.filter((e) => e.id !== employee.id);
+  }
 
   if (position) {
     newEmployees = employees.filter(
       (employee) => employee.position === position,
     );
-  } else {
-    newEmployees = employees;
   }
 
   return (

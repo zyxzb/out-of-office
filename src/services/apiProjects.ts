@@ -60,3 +60,18 @@ export async function deleteProject(id: number) {
 
   return data;
 }
+
+export async function editProject(project: Project) {
+  const { data, error } = await supabase
+    .from('Projects')
+    .update(project)
+    .eq('id', project.id)
+    .select()
+    .single();
+
+  if (error) {
+    console.error(error);
+    throw new Error('Project could not be updated');
+  }
+  return data;
+}

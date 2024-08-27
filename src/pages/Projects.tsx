@@ -1,9 +1,12 @@
 import CreateProjectForm from '../features/projects/CreateProjectForm';
 import ProjectTable from '../features/projects/ProjectTable';
+import useModal from '../hooks/useModal';
 import Heading from '../ui/Heading';
 import Modal from '../ui/Modal';
 
 const Projects = () => {
+  const { closeModal, open, setOpen } = useModal();
+
   return (
     <>
       <Heading as='h1'>Projects</Heading>
@@ -13,8 +16,10 @@ const Projects = () => {
         dialogTitle='New Project'
         dialogDescription='This action cannot be undone. This will permanently delete your
             account and remove your data from our servers.'
+        open={open}
+        setOpen={setOpen}
       >
-        <CreateProjectForm />
+        <CreateProjectForm closeModal={closeModal} />
       </Modal>
     </>
   );

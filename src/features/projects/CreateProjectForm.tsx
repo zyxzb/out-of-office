@@ -4,6 +4,7 @@ import { useForm, SubmitHandler, Controller } from 'react-hook-form';
 
 import SelectStatus from './SelectStatus';
 import useCreateProject from './useCreateProject';
+import useEditProject from './useEditProject';
 import { Project } from '../../services/apiProjects';
 import { Button } from '../../shadcn/components/ui/button';
 import { Calendar } from '../../shadcn/components/ui/calendar';
@@ -17,8 +18,15 @@ import { cn } from '../../shadcn/lib/utils';
 import FormRow from '../../ui/FormRow';
 import SelectEmployee from '../LeaveRequests/SelectEmployee';
 
-const CreateProjectForm = () => {
+type ProjectRowProps = {
+  project?: Project;
+  closeModal?: () => void;
+};
+
+const CreateProjectForm = ({ project, closeModal }: ProjectRowProps) => {
   const { createProject, isCreating } = useCreateProject();
+  const { editProject, isEditing } = useEditProject();
+  const isEditSession = Boolean(project?.id);
 
   const {
     register,
@@ -27,23 +35,35 @@ const CreateProjectForm = () => {
     formState: { errors },
     reset,
   } = useForm<Project>({
-    defaultValues: {
-      project_type: '',
-      start_date: undefined,
-      end_date: undefined,
-      project_manager: undefined,
-      comment: '',
-      status: undefined,
-    },
+    defaultValues: isEditSession
+      ? // change project manager later
+        { ...project, project_manager: undefined }
+      : {
+          project_type: '',
+          start_date: undefined,
+          end_date: undefined,
+          project_manager: undefined,
+          comment: '',
+          status: undefined,
+        },
   });
 
   const onSubmit: SubmitHandler<Project> = (data) => {
-    createProject(data, {
-      onSuccess: () => {
-        reset();
-      },
-    });
-    console.log(data);
+    if (isEditSession) {
+      editProject(data, {
+        onSuccess: () => {
+          reset();
+          closeModal?.();
+        },
+      });
+    } else {
+      createProject(data, {
+        onSuccess: () => {
+          reset();
+          closeModal?.();
+        },
+      });
+    }
   };
   return (
     <form onSubmit={handleSubmit(onSubmit)} className='flex flex-col gap-4'>
@@ -145,7 +165,7 @@ const CreateProjectForm = () => {
         render={({ field, fieldState: { error } }) => (
           <div>
             <SelectEmployee
-              selectName='Select Manager'
+              selectName='Select project manager'
               selectedItem={field.value}
               setSelectedItem={(item) => field.onChange(Number(item))}
               position='Project Manager'
@@ -182,8 +202,12 @@ const CreateProjectForm = () => {
         />
       </FormRow>
 
-      <Button type='submit' className='max-w-max px-10' disabled={isCreating}>
-        {isCreating ? 'Creating...' : 'Create'}
+      <Button
+        type='submit'
+        className='max-w-max px-10'
+        disabled={isCreating || isEditing}
+      >
+        {isCreating ? 'Creating...' : isEditSession ? 'Edit' : 'Create'}
       </Button>
     </form>
   );

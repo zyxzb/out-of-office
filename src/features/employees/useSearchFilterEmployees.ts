@@ -3,7 +3,7 @@ import { useSearchParams } from 'react-router-dom';
 
 import { getEmployees, SortBy } from '../../services/apiEmployees';
 
-const useEmployees = () => {
+const useSearchFilterEmployees = () => {
   const [searchParams] = useSearchParams();
 
   const page = !searchParams.get('page')
@@ -35,4 +35,4 @@ const useEmployees = () => {
   return { employees, isLoading, isError, error, count };
 };
 
-export default useEmployees;
+export default useSearchFilterEmployees;

@@ -4,6 +4,7 @@ import { useForm, SubmitHandler, Controller } from 'react-hook-form';
 
 import SelectEmployee from './SelectEmployee';
 import useCreateLeaveRequest from './useCreateLeaveRequest';
+import useEditLeaveRequest from './useEditLeaveRequest';
 import { LeaveRequest } from '../../services/apiLeaveRequests';
 import { Button } from '../../shadcn/components/ui/button';
 import { Calendar } from '../../shadcn/components/ui/calendar';
@@ -16,8 +17,16 @@ import {
 import { cn } from '../../shadcn/lib/utils';
 import FormRow from '../../ui/FormRow';
 
-const CreateRequestForm = () => {
+type CreateRequestForm = {
+  request?: LeaveRequest;
+  closeModal?: () => void;
+};
+
+const CreateRequestForm = ({ request, closeModal }: CreateRequestForm) => {
   const { createLeaveRequest, isCreating } = useCreateLeaveRequest();
+  const { editLeaveRequest, isEditing } = useEditLeaveRequest();
+
+  const isEditSession = Boolean(request?.id);
 
   const {
     register,
@@ -26,24 +35,35 @@ const CreateRequestForm = () => {
     reset,
     control,
   } = useForm<LeaveRequest>({
-    defaultValues: {
-      employee: undefined,
-      absence_reason: '',
-      comment: '',
-      status: 'new',
-      start_date: undefined,
-      end_date: undefined,
-    },
+    defaultValues: isEditSession
+      ? { ...request, employee: request?.id }
+      : {
+          employee: undefined,
+          absence_reason: '',
+          comment: '',
+          status: 'new',
+          start_date: undefined,
+          end_date: undefined,
+        },
   });
 
   const onSubmit: SubmitHandler<LeaveRequest> = (data) => {
-    createLeaveRequest(data, {
-      onSuccess: () => {
-        reset();
-      },
-    });
+    if (isEditSession && request) {
+      editLeaveRequest(data, {
+        onSuccess: () => {
+          reset();
+          closeModal?.();
+        },
+      });
+    } else {
+      createLeaveRequest(data, {
+        onSuccess: () => {
+          reset();
+          closeModal?.();
+        },
+      });
+    }
   };
-
   return (
     <form onSubmit={handleSubmit(onSubmit)} className='flex flex-col gap-4'>
       <Controller
@@ -166,8 +186,12 @@ const CreateRequestForm = () => {
         />
       </FormRow>
 
-      <Button type='submit' className='max-w-max px-10' disabled={isCreating}>
-        {isCreating ? 'Creating...' : 'Create'}
+      <Button
+        type='submit'
+        className='max-w-max px-10'
+        disabled={isCreating || isEditing}
+      >
+        {isCreating ? 'Creating...' : isEditSession ? 'Edit' : 'Create'}
       </Button>
     </form>
   );

@@ -3,7 +3,7 @@
 // import { useSearchParams } from 'react-router-dom';
 
 import EmployeeRow from './EmployeeRow';
-import useEmployees from './useEmployees';
+import useSearchFilterEmployees from './useSearchFilterEmployees';
 // import { Employee } from '../../services/apiEmployees';
 import Pagination from '../../ui/Pagination';
 import Table from '../../ui/Table';
@@ -22,7 +22,8 @@ import TableSkeleton from '../../ui/TableSkeleton';
 // }
 
 const EmployeeTable = () => {
-  const { employees, isLoading, isError, error, count } = useEmployees();
+  const { employees, isLoading, isError, error, count } =
+    useSearchFilterEmployees();
   // const [searchParams] = useSearchParams();
 
   if (isLoading) return <TableSkeleton />;
@@ -85,7 +86,7 @@ const EmployeeTable = () => {
 
   return (
     <>
-      <Table columns='grid-cols-8'>
+      <Table columns='grid-cols-9'>
         <Table.Header>
           <div>Id</div>
           <div>Full Name</div>
@@ -94,6 +95,7 @@ const EmployeeTable = () => {
           <div>Status</div>
           <div>People Partner</div>
           <div>Available day-offs</div>
+          <div>Operations</div>
         </Table.Header>
         <Table.Body
           // data={sortedEmployees}

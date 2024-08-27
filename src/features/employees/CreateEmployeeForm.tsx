@@ -1,14 +1,25 @@
 import { useForm, SubmitHandler, Controller } from 'react-hook-form';
 
 import useCreateEmployee from './useCreateEmployee';
+import useEditEmployee from './useEditEmployee';
 import { Employee } from '../../services/apiEmployees';
 import { Button } from '../../shadcn/components/ui/button';
 import { Input } from '../../shadcn/components/ui/input';
 import FormRow from '../../ui/FormRow';
 import SelectEmployee from '../LeaveRequests/SelectEmployee';
+import SelectStatus from '../projects/SelectStatus';
 
-const CreateEmployeeForm = () => {
+type EmployeeRowProps = {
+  employee?: Employee;
+  closeModal?: () => void;
+};
+
+const CreateEmployeeForm = ({ employee, closeModal }: EmployeeRowProps) => {
   const { createEmployee, isCreating } = useCreateEmployee();
+  const { editEmployee, isEditing } = useEditEmployee();
+
+  const isEditSession = Boolean(employee?.id);
+
   const {
     register,
     handleSubmit,
@@ -16,23 +27,39 @@ const CreateEmployeeForm = () => {
     control,
     reset,
   } = useForm<Employee>({
-    defaultValues: {
-      full_name: '',
-      subdivision: '',
-      position: '',
-      status: '',
-      people_partner: '',
-      photo: '',
-      out_of_office_balance: undefined,
-    },
+    defaultValues: isEditSession
+      ? // edit later default select
+        { ...employee, people_partner: undefined }
+      : {
+          full_name: '',
+          subdivision: '',
+          position: '',
+          status: '',
+          people_partner: '',
+          photo: '',
+          out_of_office_balance: undefined,
+        },
   });
 
   const onSubmit: SubmitHandler<Employee> = (data) => {
-    createEmployee(data, {
-      onSuccess: () => {
-        reset();
-      },
-    });
+    if (isEditSession && employee) {
+      editEmployee(
+        { newEmployeeData: { ...data }, id: employee.id },
+        {
+          onSuccess: () => {
+            reset();
+            closeModal?.();
+          },
+        },
+      );
+    } else {
+      createEmployee(data, {
+        onSuccess: () => {
+          reset();
+          closeModal?.();
+        },
+      });
+    }
   };
 
   return (
@@ -69,9 +96,27 @@ const CreateEmployeeForm = () => {
         render={({ field, fieldState: { error } }) => (
           <div>
             <SelectEmployee
-              selectName='Select an employee'
+              selectName='Select people partner'
               selectedItem={field.value}
               setSelectedItem={(item) => field.onChange(Number(item))}
+              employee={employee}
+            />
+            {error && (
+              <span className='text-xs text-red-500'>{error.message}</span>
+            )}
+          </div>
+        )}
+      />
+
+      <Controller
+        name='status'
+        control={control}
+        rules={{ required: 'Employee status is required' }}
+        render={({ field, fieldState: { error } }) => (
+          <div>
+            <SelectStatus
+              selectedStatus={field.value}
+              setSelectedStatus={(item) => field.onChange(item)}
             />
             {error && (
               <span className='text-xs text-red-500'>{error.message}</span>
@@ -103,10 +148,23 @@ const CreateEmployeeForm = () => {
           className='cursor-pointer hover:opacity-80'
         />
       </FormRow>
-
-      <Button type='submit' className='max-w-max px-10' disabled={isCreating}>
-        {isCreating ? 'Creating...' : 'Create'}
-      </Button>
+      <div className='flex gap-2'>
+        <Button
+          type='submit'
+          className='max-w-max px-10'
+          disabled={isCreating || isEditing}
+        >
+          {isCreating ? 'Creating...' : isEditSession ? 'Edit' : 'Create'}
+        </Button>
+        <Button
+          type='button'
+          variant='destructive'
+          className='max-w-max px-10'
+          onClick={closeModal}
+        >
+          Close
+        </Button>
+      </div>
     </form>
   );
 };

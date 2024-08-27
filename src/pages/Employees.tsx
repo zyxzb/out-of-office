@@ -1,10 +1,13 @@
 import CreateEmployeeForm from '../features/employees/CreateEmployeeForm';
 import EmployeesTableOperations from '../features/employees/EmployeesTableOperations';
 import EmployeeTable from '../features/employees/EmployeeTable';
+import useModal from '../hooks/useModal';
 import Heading from '../ui/Heading';
 import Modal from '../ui/Modal';
 
 const Employees = () => {
+  const { closeModal, open, setOpen } = useModal();
+
   return (
     <>
       <Heading as='h1'>Employees</Heading>
@@ -13,10 +16,10 @@ const Employees = () => {
       <Modal
         buttonText='Add new employee'
         dialogTitle='Create new employee'
-        dialogDescription='This action cannot be undone. This will permanently delete your
-            account and remove your data from our servers.'
+        open={open}
+        setOpen={setOpen}
       >
-        <CreateEmployeeForm />
+        <CreateEmployeeForm closeModal={closeModal} />
       </Modal>
     </>
   );

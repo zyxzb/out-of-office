@@ -1,3 +1,5 @@
+import { Dispatch, SetStateAction } from 'react';
+
 import { Button } from '../shadcn/components/ui/button';
 import {
   Dialog,
@@ -14,6 +16,8 @@ type ModalProps = {
   children: React.ReactNode;
   dialogDescription?: string;
   icon?: JSX.Element;
+  open?: boolean;
+  setOpen?: Dispatch<SetStateAction<boolean>>;
 };
 
 const Modal = ({
@@ -22,9 +26,11 @@ const Modal = ({
   dialogDescription,
   children,
   icon,
+  open,
+  setOpen,
 }: ModalProps) => {
   return (
-    <Dialog>
+    <Dialog open={open} onOpenChange={setOpen}>
       <DialogTrigger asChild>
         <Button className='flex max-w-max gap-1'>
           {icon} {buttonText}
@@ -33,7 +39,9 @@ const Modal = ({
       <DialogContent className='flex flex-col gap-8 dark:bg-black'>
         <DialogHeader>
           <DialogTitle>{dialogTitle}</DialogTitle>
-          <DialogDescription>{dialogDescription}</DialogDescription>
+          {dialogDescription && (
+            <DialogDescription>{dialogDescription}</DialogDescription>
+          )}
         </DialogHeader>
         {children}
       </DialogContent>

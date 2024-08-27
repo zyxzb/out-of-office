@@ -1,4 +1,5 @@
 import { ApprovalRequest } from '../../services/apiApprovalRequests';
+// import RejectModal from '../../ui/RejectModal';
 import Table from '../../ui/Table';
 
 type ApprovalRequestProps = {
@@ -22,13 +23,9 @@ const ApprovalRequestRow = ({
       <div>{status}</div>
       <div>{comment}</div>
 
-      {/* <Menus>
-        <Menus.Toggle id={approvalRequestId} />
-        <Menus.List id={approvalRequestId}>
-          <Menus.Button icon={<HiEye />}>See details</Menus.Button>
-          <Menus.Button icon={<HiEye />}>See details</Menus.Button>
-        </Menus.List>
-      </Menus> */}
+      <div>
+        {/* <RejectModal dialogTitle={`Reject request ${approvalRequestId}`} /> */}
+      </div>
     </Table.Row>
   );
 };

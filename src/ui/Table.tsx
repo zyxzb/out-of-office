@@ -13,6 +13,10 @@ type RowProps = {
   children: React.ReactNode;
 };
 
+type CellProps = {
+  children: React.ReactNode;
+};
+
 type BodyProps<T> = {
   data: T[];
   render: (item: T) => React.ReactNode;
@@ -62,6 +66,14 @@ const Row = ({ children }: RowProps) => {
   );
 };
 
+const Cell = ({ children }: CellProps) => {
+  return (
+    <div className='line-clamp-2' title={children as string}>
+      {children}
+    </div>
+  );
+};
+
 const Body = <T,>({ data, render }: BodyProps<T>) => {
   if (data.length === 0) return <p>No data to show at the moment</p>;
 
@@ -71,5 +83,6 @@ const Body = <T,>({ data, render }: BodyProps<T>) => {
 Table.Header = Header;
 Table.Row = Row;
 Table.Body = Body;
+Table.Cell = Cell;
 
 export default Table;

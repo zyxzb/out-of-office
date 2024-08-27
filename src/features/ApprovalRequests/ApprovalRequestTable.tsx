@@ -19,6 +19,7 @@ const ApprovalRequestTable = () => {
         <div>Leave Request</div>
         <div>Status</div>
         <div>Comment</div>
+        <div>Operations</div>
       </Table.Header>
       <Table.Body
         data={approvalRequests}

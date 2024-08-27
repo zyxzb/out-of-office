@@ -154,3 +154,14 @@ export async function deleteEmployee(id: number) {
 
   return data;
 }
+
+export async function getAllEmployees() {
+  const { data, error } = await supabase.from('Employees').select('*');
+
+  if (error) {
+    console.log(error);
+    throw new Error(`Employee could not be deleted ${error.details ?? null}`);
+  }
+
+  return data;
+}

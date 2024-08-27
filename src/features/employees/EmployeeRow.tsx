@@ -1,14 +1,19 @@
+import { HiPencil } from 'react-icons/hi2';
+
+import CreateEmployeeForm from './CreateEmployeeForm';
 import useDeleteEmployee from './useDeleteEmployee';
+import useModal from '../../hooks/useModal';
 import { Employee } from '../../services/apiEmployees';
-import DeleteEditModal from '../../ui/DeleteModal';
+import DeleteModal from '../../ui/DeleteModal';
+import Modal from '../../ui/Modal';
 import Table from '../../ui/Table';
 
 type EmployeeRowProps = {
   employee: Employee;
 };
 
-const EmployeeRow = ({
-  employee: {
+const EmployeeRow = ({ employee }: EmployeeRowProps) => {
+  const {
     id: employeeId,
     full_name,
     subdivision,
@@ -17,9 +22,9 @@ const EmployeeRow = ({
     people_partner,
     // photo,
     out_of_office_balance,
-  },
-}: EmployeeRowProps) => {
+  } = employee;
   const { isDeleting, deleteEmployee } = useDeleteEmployee();
+  const { closeModal, open, setOpen } = useModal();
 
   return (
     <Table.Row>
@@ -31,8 +36,17 @@ const EmployeeRow = ({
       <div>{people_partner}</div>
       <div>{out_of_office_balance}</div>
 
-      <div>
-        <DeleteEditModal
+      <div className='flex gap-2'>
+        <Modal
+          icon={<HiPencil />}
+          buttonText='Edit'
+          dialogTitle={`Edit Employee ${employeeId}`}
+          open={open}
+          setOpen={setOpen}
+        >
+          <CreateEmployeeForm employee={employee} closeModal={closeModal} />
+        </Modal>
+        <DeleteModal
           dialogTitle='Delete Employee'
           isDeleting={isDeleting}
           onDelete={() => deleteEmployee(employeeId)}

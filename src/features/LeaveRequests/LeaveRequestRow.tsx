@@ -1,16 +1,20 @@
 import { format } from 'date-fns';
+import { HiPencil } from 'react-icons/hi2';
 
+import CreateRequestForm from './CreateRequestForm';
 import useDeleteLeaveRequest from './useDeleteLeaveRequest';
 import { LeaveRequest } from '../../services/apiLeaveRequests';
-import DeleteEditModal from '../../ui/DeleteModal';
+import DeleteModal from '../../ui/DeleteModal';
+import Modal from '../../ui/Modal';
 import Table from '../../ui/Table';
+import useModal from '../../hooks/useModal';
 
 type LeaveRequestProps = {
   request: LeaveRequest;
 };
 
-const LeaveRequestRow = ({
-  request: {
+const LeaveRequestRow = ({ request }: LeaveRequestProps) => {
+  const {
     id: requestId,
     employee,
     absence_reason,
@@ -18,9 +22,10 @@ const LeaveRequestRow = ({
     end_date,
     comment,
     status,
-  },
-}: LeaveRequestProps) => {
+  } = request;
+
   const { isDeleting, deleteRequest } = useDeleteLeaveRequest();
+  const { closeModal, open, setOpen } = useModal();
 
   return (
     <Table.Row>
@@ -32,8 +37,17 @@ const LeaveRequestRow = ({
       <div>{comment}</div>
       <div>{status}</div>
 
-      <div>
-        <DeleteEditModal
+      <div className='flex gap-2'>
+        <Modal
+          icon={<HiPencil />}
+          buttonText='Edit'
+          dialogTitle={`Edit Request ${requestId}`}
+          open={open}
+          setOpen={setOpen}
+        >
+          <CreateRequestForm request={request} closeModal={closeModal} />
+        </Modal>
+        <DeleteModal
           dialogTitle='Delete Request'
           onDelete={() => deleteRequest(requestId)}
           isDeleting={isDeleting}

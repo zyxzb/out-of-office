@@ -11,7 +11,7 @@ export type LeaveRequest = {
   status: string;
 };
 
-export async function getRequests(): Promise<LeaveRequest[]> {
+export async function getRequests() {
   const { data, error } = await supabase.from('LeaveRequests').select(`
       id,
       created_at,
@@ -34,7 +34,7 @@ export async function getRequests(): Promise<LeaveRequest[]> {
     employee: request.employee.full_name,
   }));
 
-  return requests as LeaveRequest[];
+  return requests;
 }
 
 export async function deleteLeaveRequest(id: number) {
@@ -117,4 +117,19 @@ export async function createEditRequest(leaveRequests: any, id?: number) {
   //     'Cabins image could not be uploaded and the cabin was not created',
   //   );
   // }
+}
+
+export async function editLeaveRequest(leaveRequests: LeaveRequest) {
+  const { data, error } = await supabase
+    .from('LeaveRequests')
+    .update(leaveRequests)
+    .eq('id', leaveRequests.id)
+    .select()
+    .single();
+
+  if (error) {
+    console.error(error);
+    throw new Error('Leave Request could not be updated');
+  }
+  return data;
 }

@@ -51,7 +51,7 @@ const LeaveRequestTable = () => {
   }
 
   return (
-    <Table columns='grid-cols-8'>
+    <Table columns='grid-cols-9'>
       <Table.Header>
         <div>Id</div>
         <div>Employee</div>
@@ -60,6 +60,7 @@ const LeaveRequestTable = () => {
         <div>End Date</div>
         <div>Comment</div>
         <div>Status</div>
+        <div>Operations</div>
       </Table.Header>
       <Table.Body
         data={sortedLeaveRequests}
