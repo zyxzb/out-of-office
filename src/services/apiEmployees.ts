@@ -54,7 +54,13 @@ export async function getEmployees({
   );
 
   if (filter && filter.filterHeader && filter.filterValue) {
-    query = query.eq(filter.filterHeader, filter.filterValue);
+    const numericFields = ['id', 'out_of_office_balance'];
+
+    if (numericFields.includes(filter.filterHeader)) {
+      query = query.eq(filter.filterHeader, filter.filterValue);
+    } else {
+      query = query.ilike(filter.filterHeader, `%${filter.filterValue}%`);
+    }
   }
 
   if (filter && filter.status) {
