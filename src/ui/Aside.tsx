@@ -2,7 +2,6 @@ import { Link } from 'react-router-dom';
 
 import Nav from './Nav';
 import Logout from '../features/authentication/Logout';
-import { Button } from '../shadcn/components/ui/button';
 
 const Aside = () => {
   return (
@@ -11,7 +10,6 @@ const Aside = () => {
         Out of Office
       </Link>
       <Nav />
-      <Button>Upload sample data</Button>
       <Logout />
     </aside>
   );
