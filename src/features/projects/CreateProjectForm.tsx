@@ -16,7 +16,7 @@ import {
 } from '../../shadcn/components/ui/popover';
 import { cn } from '../../shadcn/lib/utils';
 import FormRow from '../../ui/FormRow';
-import SelectEmployee from '../LeaveRequests/SelectEmployee';
+import SelectEmployee from '../leaveRequests/SelectEmployee';
 
 type ProjectRowProps = {
   project?: Project;
@@ -34,6 +34,8 @@ const CreateProjectForm = ({ project, closeModal }: ProjectRowProps) => {
     control,
     formState: { errors },
     reset,
+    getValues,
+    trigger,
   } = useForm<Project>({
     defaultValues: isEditSession
       ? // change project manager later
@@ -65,6 +67,7 @@ const CreateProjectForm = ({ project, closeModal }: ProjectRowProps) => {
       });
     }
   };
+
   return (
     <form onSubmit={handleSubmit(onSubmit)} className='flex flex-col gap-4'>
       <FormRow label='Full name' error={errors?.project_type?.message}>
@@ -80,7 +83,17 @@ const CreateProjectForm = ({ project, closeModal }: ProjectRowProps) => {
         <Controller
           name='start_date'
           control={control}
-          rules={{ required: 'Start Date is required' }}
+          rules={{
+            required: 'Start Date is required',
+            validate: (startDate) => {
+              const endDate = getValues('end_date');
+              return (
+                !endDate ||
+                startDate <= endDate ||
+                'Start date cannot be after end date'
+              );
+            },
+          }}
           render={({ field }) => (
             <Popover>
               <PopoverTrigger asChild>
@@ -103,8 +116,11 @@ const CreateProjectForm = ({ project, closeModal }: ProjectRowProps) => {
                 <Calendar
                   mode='single'
                   selected={field.value}
-                  onSelect={field.onChange}
                   className='rounded-md border shadow dark:bg-black'
+                  onSelect={async (date) => {
+                    field.onChange(date); // update value
+                    await trigger('end_date'); // revalidation end_date
+                  }}
                 />
               </PopoverContent>
             </Popover>
@@ -121,7 +137,17 @@ const CreateProjectForm = ({ project, closeModal }: ProjectRowProps) => {
         <Controller
           name='end_date'
           control={control}
-          rules={{ required: 'End Date is required' }}
+          rules={{
+            required: 'End Date is required',
+            validate: (endDate) => {
+              const startDate = getValues('start_date');
+              return (
+                !startDate ||
+                endDate >= startDate ||
+                'End date cannot be before start date'
+              );
+            },
+          }}
           render={({ field }) => (
             <Popover>
               <PopoverTrigger asChild>
@@ -144,8 +170,11 @@ const CreateProjectForm = ({ project, closeModal }: ProjectRowProps) => {
                 <Calendar
                   mode='single'
                   selected={field.value}
-                  onSelect={field.onChange}
                   className='rounded-md border shadow dark:bg-black'
+                  onSelect={async (date) => {
+                    field.onChange(date); // update value
+                    await trigger('start_date'); //  'start_date' revalidation
+                  }}
                 />
               </PopoverContent>
             </Popover>

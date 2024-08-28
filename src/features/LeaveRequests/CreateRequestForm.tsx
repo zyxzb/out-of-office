@@ -34,6 +34,8 @@ const CreateRequestForm = ({ request, closeModal }: CreateRequestForm) => {
     formState: { errors },
     reset,
     control,
+    getValues,
+    trigger,
   } = useForm<LeaveRequest>({
     defaultValues: isEditSession
       ? { ...request, employee: request?.id }
@@ -99,7 +101,17 @@ const CreateRequestForm = ({ request, closeModal }: CreateRequestForm) => {
         <Controller
           name='start_date'
           control={control}
-          rules={{ required: 'Start Date is required' }}
+          rules={{
+            required: 'Start Date is required',
+            validate: (startDate) => {
+              const endDate = getValues('end_date');
+              return (
+                !endDate ||
+                startDate <= endDate ||
+                'Start date cannot be after end date'
+              );
+            },
+          }}
           render={({ field }) => (
             <Popover>
               <PopoverTrigger asChild>
@@ -122,8 +134,13 @@ const CreateRequestForm = ({ request, closeModal }: CreateRequestForm) => {
                 <Calendar
                   mode='single'
                   selected={field.value}
-                  onSelect={field.onChange}
+                  onSelect={async (date) => {
+                    field.onChange(date); // update value
+                    await trigger('end_date'); // revalidation end_date
+                  }}
                   className='rounded-md border shadow dark:bg-black'
+                  // Disables past dates from current date
+                  // fromDate={new Date()}
                 />
               </PopoverContent>
             </Popover>
@@ -142,7 +159,17 @@ const CreateRequestForm = ({ request, closeModal }: CreateRequestForm) => {
         <Controller
           name='end_date'
           control={control}
-          rules={{ required: 'End Date is required' }}
+          rules={{
+            required: 'End Date is required',
+            validate: (endDate) => {
+              const startDate = getValues('start_date');
+              return (
+                !startDate ||
+                endDate >= startDate ||
+                'End date cannot be before start date'
+              );
+            },
+          }}
           render={({ field }) => (
             <Popover>
               <PopoverTrigger asChild>
@@ -165,8 +192,11 @@ const CreateRequestForm = ({ request, closeModal }: CreateRequestForm) => {
                 <Calendar
                   mode='single'
                   selected={field.value}
-                  onSelect={field.onChange}
                   className='rounded-md border shadow dark:bg-black'
+                  onSelect={async (date) => {
+                    field.onChange(date); // update value
+                    await trigger('start_date'); //  'start_date' revalidation
+                  }}
                 />
               </PopoverContent>
             </Popover>

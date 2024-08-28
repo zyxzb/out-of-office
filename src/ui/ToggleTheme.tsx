@@ -7,7 +7,12 @@ const ToggleTheme = () => {
   const toggleTheme = useThemeStore((store) => store.setTheme);
 
   return (
-    <button type='button' aria-label='toggle theme' onClick={toggleTheme}>
+    <button
+      type='button'
+      aria-label='toggle theme'
+      onClick={toggleTheme}
+      className='flex items-center'
+    >
       {theme === 'light' && <IoSunnyOutline size={20} />}
       {theme === 'dark' && <IoMoonOutline size={20} />}
     </button>

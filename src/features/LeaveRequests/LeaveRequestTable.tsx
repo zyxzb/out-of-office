@@ -4,6 +4,7 @@ import LeaveRequestRow from './LeaveRequestRow';
 import useLeaveRequests from './useLeaveRequests';
 import { LeaveRequest } from '../../services/apiLeaveRequests';
 import Table from '../../ui/Table';
+import TableSkeleton from '../../ui/TableSkeleton';
 
 function isKeyOfLeaveRequest(key: string): key is keyof LeaveRequest {
   return ['id', 'employee', 'absence_reason', 'comment', 'status'].includes(
@@ -15,7 +16,7 @@ const LeaveRequestTable = () => {
   const { requests, isLoading, isError, error } = useLeaveRequests();
   const [searchParams] = useSearchParams();
 
-  if (isLoading) return <p>Loading...</p>;
+  if (isLoading) return <TableSkeleton />;
 
   if (isError) return <p>{error?.message}</p>;
 

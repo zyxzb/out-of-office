@@ -6,7 +6,7 @@ import { Employee } from '../../services/apiEmployees';
 import { Button } from '../../shadcn/components/ui/button';
 import { Input } from '../../shadcn/components/ui/input';
 import FormRow from '../../ui/FormRow';
-import SelectEmployee from '../LeaveRequests/SelectEmployee';
+import SelectEmployee from '../leaveRequests/SelectEmployee';
 import SelectStatus from '../projects/SelectStatus';
 
 type EmployeeRowProps = {

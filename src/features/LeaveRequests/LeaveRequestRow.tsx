@@ -3,11 +3,11 @@ import { HiPencil } from 'react-icons/hi2';
 
 import CreateRequestForm from './CreateRequestForm';
 import useDeleteLeaveRequest from './useDeleteLeaveRequest';
+import useModal from '../../hooks/useModal';
 import { LeaveRequest } from '../../services/apiLeaveRequests';
 import DeleteModal from '../../ui/DeleteModal';
 import Modal from '../../ui/Modal';
 import Table from '../../ui/Table';
-import useModal from '../../hooks/useModal';
 
 type LeaveRequestProps = {
   request: LeaveRequest;

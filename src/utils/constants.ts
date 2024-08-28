@@ -19,6 +19,10 @@ export const navLinks = [
     name: 'Approval Requests (prośba o zatwierdzenie)',
     link: '/approval-requests',
   },
+  {
+    name: 'Users',
+    link: '/users',
+  },
 ];
 
 export const PAGE_SIZE = 5;

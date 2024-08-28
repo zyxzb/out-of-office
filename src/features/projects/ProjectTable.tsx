@@ -1,11 +1,12 @@
 import ProjectRow from './ProjectRow';
 import useProjects from './useProjects';
 import Table from '../../ui/Table';
+import TableSkeleton from '../../ui/TableSkeleton';
 
 const ProjectTable = () => {
   const { projects, isLoading, isError, error } = useProjects();
 
-  if (isLoading) return <p>Loading...</p>;
+  if (isLoading) return <TableSkeleton />;
 
   if (isError) return <p>{error?.message}</p>;
 

@@ -1,4 +1,4 @@
-import ApprovalRequestTable from '../features/ApprovalRequests/ApprovalRequestTable';
+import ApprovalRequestTable from '../features/approvalRequests/ApprovalRequestTable';
 import Heading from '../ui/Heading';
 
 const ApprovalRequests = () => {

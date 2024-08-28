@@ -10,6 +10,7 @@ import LeaveRequests from './pages/LeaveRequests';
 import Login from './pages/Login';
 import NotFound from './pages/NotFound';
 import Projects from './pages/Projects';
+import Users from './pages/Users';
 import ThemeProvider from './providers/ThemeProvider';
 import AppLayout from './ui/AppLayout';
 import ProtectedRoute from './ui/ProtectedRoute';
@@ -40,6 +41,7 @@ const App = () => {
               <Route path='projects' element={<Projects />} />
               <Route path='leave-requests' element={<LeaveRequests />} />
               <Route path='approval-requests' element={<ApprovalRequests />} />
+              <Route path='users' element={<Users />} />
             </Route>
             <Route path='login' element={<Login />} />
             <Route path='*' element={<NotFound />} />

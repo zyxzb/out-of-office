@@ -1,6 +1,6 @@
 import supabase from './supabase';
 
-type signupProps = {
+export type SignupProps = {
   fullName: string;
   email: string;
   // eslint-disable-next-line @typescript-eslint/no-explicit-any
@@ -17,11 +17,11 @@ type updateCurrentUserProps = {
   password: string;
 };
 
-export async function signup({ fullName, email, password }: signupProps) {
+export async function signup({ fullName, email, password }: SignupProps) {
   const { data, error } = await supabase.auth.signUp({
     email,
     password,
-    options: { data: { fullName, avatar: '' } },
+    options: { data: { fullName } },
   });
   if (error) throw new Error(error.message);
 
