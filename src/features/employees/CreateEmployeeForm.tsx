@@ -35,7 +35,7 @@ const CreateEmployeeForm = ({ employee, closeModal }: EmployeeRowProps) => {
           subdivision: '',
           position: '',
           status: '',
-          people_partner: '',
+          people_partner: undefined,
           photo: '',
           out_of_office_balance: undefined,
         },
