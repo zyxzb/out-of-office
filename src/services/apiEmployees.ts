@@ -8,7 +8,7 @@ export type Employee = {
   subdivision: string;
   position: string;
   status: string;
-  people_partner: string;
+  people_partner: number;
   photo?: string;
   out_of_office_balance: number;
 };
@@ -46,7 +46,7 @@ export async function getEmployees({
       subdivision,
       position,
       status,
-      people_partner!inner(full_name),
+      people_partner,
       photo,
       out_of_office_balance
     `,
@@ -54,7 +54,7 @@ export async function getEmployees({
   );
 
   if (filter && filter.filterHeader && filter.filterValue) {
-    const numericFields = ['id', 'out_of_office_balance'];
+    const numericFields = ['id', 'out_of_office_balance', 'people_partner'];
 
     if (numericFields.includes(filter.filterHeader)) {
       query = query.eq(filter.filterHeader, filter.filterValue);
@@ -80,18 +80,14 @@ export async function getEmployees({
     query = query.range(from, to);
   }
 
-  const { data, error, count } = await query;
+  const { data: employees, error, count } = await query;
 
   if (error) {
     console.log(error);
     throw new Error('Employees could not be loaded');
   }
 
-  // eslint-disable-next-line @typescript-eslint/no-explicit-any
-  const employees = data.map((employee: any) => ({
-    ...employee,
-    people_partner: employee.people_partner.full_name,
-  }));
+  console.log(employees);
 
   return { employees, count };
 }
@@ -109,6 +105,20 @@ export async function getEmployeeById(id: number) {
   }
 
   return data;
+}
+
+export async function getEmployeeByName(name: string) {
+  const { data, error } = await supabase
+    .from('Employees')
+    .select('id')
+    .ilike('full_name', `%${name}%`);
+
+  if (error) {
+    console.log(error);
+    throw new Error('Employees could not be loaded');
+  }
+
+  return data.map((employee) => employee.id);
 }
 
 export async function createEditEmployee(employee: Employee, id?: number) {

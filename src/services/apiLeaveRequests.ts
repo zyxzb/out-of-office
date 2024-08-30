@@ -1,4 +1,5 @@
-import supabase from './supabase'; // { supabaseUrl }
+import supabase from './supabase';
+import { PAGE_SIZE } from '../utils/constants';
 
 export type LeaveRequest = {
   id: number;
@@ -11,8 +12,33 @@ export type LeaveRequest = {
   status: string;
 };
 
-export async function getRequests() {
-  const { data, error } = await supabase.from('LeaveRequests').select(`
+export type PaginatedProjects = {
+  employees: LeaveRequest[];
+  count: number | null;
+};
+
+export type SortBy = {
+  field: string;
+  direction: 'asc' | 'desc';
+};
+
+export type Filter = {
+  filterHeader?: string;
+  filterValue?: string | number;
+  status?: string;
+};
+
+export async function getRequests({
+  page,
+  sortBy,
+  filter,
+}: {
+  page: number;
+  sortBy?: SortBy;
+  filter?: Filter;
+}) {
+  let query = supabase.from('LeaveRequests').select(
+    `
       id,
       created_at,
       employee!inner(full_name),
@@ -21,7 +47,38 @@ export async function getRequests() {
       end_date,
       comment,
       status
-    `);
+    `,
+    { count: 'exact' },
+  );
+
+  if (filter && filter.filterHeader && filter.filterValue) {
+    const numericFields = ['id'];
+
+    if (numericFields.includes(filter.filterHeader)) {
+      query = query.eq(filter.filterHeader, filter.filterValue);
+    } else {
+      query = query.ilike(filter.filterHeader, `%${filter.filterValue}%`);
+    }
+  }
+
+  if (filter && filter.status) {
+    if (filter.status === 'all') query;
+    else query = query.eq('status', filter.status);
+  }
+
+  if (sortBy) {
+    query = query.order(sortBy.field, {
+      ascending: sortBy.direction === 'asc',
+    });
+  }
+
+  if (page) {
+    const from = (page - 1) * PAGE_SIZE;
+    const to = from + PAGE_SIZE - 1;
+    query = query.range(from, to);
+  }
+
+  const { data, error, count } = await query;
 
   if (error) {
     console.log(error);
@@ -34,7 +91,7 @@ export async function getRequests() {
     employee: request.employee.full_name,
   }));
 
-  return requests;
+  return { requests, count };
 }
 
 export async function deleteLeaveRequest(id: number) {

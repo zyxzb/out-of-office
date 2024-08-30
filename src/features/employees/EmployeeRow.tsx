@@ -1,4 +1,5 @@
-import { HiPencil } from 'react-icons/hi2';
+import { HiPencil, HiLink } from 'react-icons/hi2';
+import { Link } from 'react-router-dom';
 
 import CreateEmployeeForm from './CreateEmployeeForm';
 import useDeleteEmployee from './useDeleteEmployee';
@@ -33,7 +34,15 @@ const EmployeeRow = ({ employee }: EmployeeRowProps) => {
       <div>{subdivision}</div>
       <div>{position}</div>
       <div>{status}</div>
-      <div>{people_partner}</div>
+      <div>
+        <Link
+          className='flex max-w-max items-center gap-2 hover:underline'
+          to={`/employees?searchHeader=id&searchValue=${people_partner}`}
+        >
+          <HiLink />
+          {people_partner}
+        </Link>
+      </div>
       <div>{out_of_office_balance}</div>
 
       <div className='flex gap-2'>

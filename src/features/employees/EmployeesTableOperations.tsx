@@ -37,11 +37,11 @@ const EmployeesTableOperations = () => {
             { value: 'position-desc', label: 'Sort by position (Z-A)' },
             {
               value: 'people_partner-asc',
-              label: 'Sort by People Partner (A-Z)',
+              label: 'Sort by People Partner id (low first)',
             },
             {
               value: 'people_partner-desc',
-              label: 'Sort by People Partner (Z-A)',
+              label: 'Sort by People Partner (high first)',
             },
             {
               value: 'out_of_office_balance-asc',
