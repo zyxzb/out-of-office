@@ -1,4 +1,4 @@
-// context or hook for modal
+// context or hook for modal - context state is shared across all places
 
 import {
   createContext,

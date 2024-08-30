@@ -1,4 +1,5 @@
 import supabase from './supabase';
+import { PAGE_SIZE } from '../utils/constants';
 
 export type Project = {
   id: number;
@@ -11,8 +12,33 @@ export type Project = {
   status: 'active' | 'inactive';
 };
 
-export async function getProjects() {
-  const { data, error } = await supabase.from('Projects').select(`
+export type PaginatedProjects = {
+  employees: Project[];
+  count: number | null;
+};
+
+export type SortBy = {
+  field: string;
+  direction: 'asc' | 'desc';
+};
+
+export type Filter = {
+  filterHeader?: string;
+  filterValue?: string | number;
+  status?: string;
+};
+
+export async function getProjects({
+  page,
+  sortBy,
+  filter,
+}: {
+  page: number;
+  sortBy?: SortBy;
+  filter?: Filter;
+}) {
+  let query = supabase.from('Projects').select(
+    `
       id,
       created_at,
       project_type,
@@ -21,7 +47,38 @@ export async function getProjects() {
       project_manager!inner(full_name),
       comment,
       status
-    `);
+    `,
+    { count: 'exact' },
+  );
+
+  if (filter && filter.filterHeader && filter.filterValue) {
+    const numericFields = ['id', 'out_of_office_balance'];
+
+    if (numericFields.includes(filter.filterHeader)) {
+      query = query.eq(filter.filterHeader, filter.filterValue);
+    } else {
+      query = query.ilike(filter.filterHeader, `%${filter.filterValue}%`);
+    }
+  }
+
+  if (filter && filter.status) {
+    if (filter.status === 'all') query;
+    else query = query.eq('status', filter.status);
+  }
+
+  if (sortBy) {
+    query = query.order(sortBy.field, {
+      ascending: sortBy.direction === 'asc',
+    });
+  }
+
+  if (page) {
+    const from = (page - 1) * PAGE_SIZE;
+    const to = from + PAGE_SIZE - 1;
+    query = query.range(from, to);
+  }
+
+  const { data, error, count } = await query;
 
   if (error) {
     console.log(error);
@@ -34,7 +91,7 @@ export async function getProjects() {
     project_manager: project.project_manager.full_name,
   }));
 
-  return projects;
+  return { projects, count };
 }
 
 export async function createProject(project: Project) {
