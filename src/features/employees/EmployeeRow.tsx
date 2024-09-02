@@ -29,7 +29,16 @@ const EmployeeRow = ({ employee }: EmployeeRowProps) => {
 
   return (
     <Table.Row>
-      <div>{employeeId}</div>
+      <div>
+        <Link
+          className='flex max-w-max items-center gap-2 hover:underline'
+          to={`/employee/${employeeId}`}
+        >
+          <HiLink />
+
+          {employeeId}
+        </Link>
+      </div>
       <div>{full_name}</div>
       <div>{subdivision}</div>
       <div>{position}</div>
@@ -37,7 +46,7 @@ const EmployeeRow = ({ employee }: EmployeeRowProps) => {
       <div>
         <Link
           className='flex max-w-max items-center gap-2 hover:underline'
-          to={`/employees?searchHeader=id&searchValue=${people_partner}`}
+          to={`/employee/${people_partner}`}
         >
           <HiLink />
           {people_partner}

@@ -87,21 +87,18 @@ export async function getEmployees({
     throw new Error('Employees could not be loaded');
   }
 
-  console.log(employees);
-
   return { employees, count };
 }
 
-export async function getEmployeeById(id: number) {
+export async function getEmployeeById(employeeId: number) {
   const { data, error } = await supabase
     .from('Employees')
     .select('*')
-    .eq('id', id)
+    .eq('id', employeeId)
     .single();
 
   if (error) {
-    console.log(error);
-    throw new Error('Employees could not be loaded');
+    throw new Error(`Employee ${employeeId} could not be loaded`);
   }
 
   return data;

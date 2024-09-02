@@ -5,6 +5,7 @@ import { BrowserRouter, Route, Routes } from 'react-router-dom';
 
 import ApprovalRequests from './pages/ApprovalRequests';
 import Dashboard from './pages/Dashboard';
+import Employee from './pages/Employee';
 import Employees from './pages/Employees';
 import LeaveRequests from './pages/LeaveRequests';
 import Login from './pages/Login';
@@ -42,6 +43,7 @@ const App = () => {
               <Route path='leave-requests' element={<LeaveRequests />} />
               <Route path='approval-requests' element={<ApprovalRequests />} />
               <Route path='users' element={<Users />} />
+              <Route path='employee/:employeeId' element={<Employee />} />
             </Route>
             <Route path='login' element={<Login />} />
             <Route path='*' element={<NotFound />} />
