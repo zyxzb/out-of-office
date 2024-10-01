@@ -2,13 +2,13 @@ import { ReactNode } from 'react';
 
 import { Table as TableShadCn, TableBody } from '../shadcn/components/ui/table';
 
-type Table2Props<T> = {
+type TableProps<T> = {
   children: ReactNode;
   data: T[];
   render: (item: T) => ReactNode;
 };
 
-const Table = <T,>({ children, data, render }: Table2Props<T>) => {
+const Table = <T,>({ children, data, render }: TableProps<T>) => {
   return (
     <TableShadCn>
       {children}
