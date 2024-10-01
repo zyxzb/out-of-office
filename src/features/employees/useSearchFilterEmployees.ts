@@ -2,9 +2,11 @@ import { useQuery } from '@tanstack/react-query';
 import { useSearchParams } from 'react-router-dom';
 
 import { getEmployees, SortBy } from '../../services/apiEmployees';
+import { useRowsStore } from '../../store/selectRows-store';
 
 const useSearchFilterEmployees = () => {
   const [searchParams] = useSearchParams();
+  const { numberOfRows } = useRowsStore();
 
   const page = !searchParams.get('page')
     ? 1
@@ -25,8 +27,8 @@ const useSearchFilterEmployees = () => {
   };
 
   const { data, isLoading, isError, error } = useQuery({
-    queryKey: ['employees', page, sortBy, filter],
-    queryFn: () => getEmployees({ page, sortBy, filter }),
+    queryKey: ['employees', page, sortBy, filter, numberOfRows],
+    queryFn: () => getEmployees({ page, sortBy, filter, numberOfRows }),
   });
 
   const employees = data?.employees || [];

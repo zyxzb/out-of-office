@@ -2,9 +2,11 @@ import { useQuery } from '@tanstack/react-query';
 import { useSearchParams } from 'react-router-dom';
 
 import { getProjects, SortBy } from '../../services/apiProjects';
+import { useRowsStore } from '../../store/selectRows-store';
 
 const useSearchFilterProjects = () => {
   const [searchParams] = useSearchParams();
+  const { numberOfRows } = useRowsStore();
 
   const page = !searchParams.get('page')
     ? 1
@@ -25,8 +27,8 @@ const useSearchFilterProjects = () => {
   };
 
   const { data, isLoading, isError, error } = useQuery({
-    queryKey: ['projects', page, sortBy, filter],
-    queryFn: () => getProjects({ page, sortBy, filter }),
+    queryKey: ['projects', page, sortBy, filter, numberOfRows],
+    queryFn: () => getProjects({ page, sortBy, filter, numberOfRows }),
   });
 
   console.log(data);

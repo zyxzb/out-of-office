@@ -24,5 +24,3 @@ export const navLinks = [
     link: '/users',
   },
 ];
-
-export const PAGE_SIZE = 5;

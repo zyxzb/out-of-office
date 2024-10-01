@@ -2,9 +2,11 @@ import { useQuery } from '@tanstack/react-query';
 import { useSearchParams } from 'react-router-dom';
 
 import { getRequests, SortBy } from '../../services/apiLeaveRequests';
+import { useRowsStore } from '../../store/selectRows-store';
 
 const useSearchFilterLeaveRequests = () => {
   const [searchParams] = useSearchParams();
+  const { numberOfRows } = useRowsStore();
 
   const page = !searchParams.get('page')
     ? 1
@@ -25,8 +27,8 @@ const useSearchFilterLeaveRequests = () => {
   };
 
   const { data, isLoading, isError, error } = useQuery({
-    queryKey: ['leaveRequests', page, sortBy, filter],
-    queryFn: () => getRequests({ page, sortBy, filter }),
+    queryKey: ['leaveRequests', page, sortBy, filter, numberOfRows],
+    queryFn: () => getRequests({ page, sortBy, filter, numberOfRows }),
   });
 
   console.log(data);

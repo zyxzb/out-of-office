@@ -5,9 +5,11 @@ import {
   getApprovalRequests,
   SortBy,
 } from '../../services/apiApprovalRequests';
+import { useRowsStore } from '../../store/selectRows-store';
 
 const useSearchFilterApprovalRequests = () => {
   const [searchParams] = useSearchParams();
+  const { numberOfRows } = useRowsStore();
 
   const page = !searchParams.get('page')
     ? 1
@@ -28,8 +30,8 @@ const useSearchFilterApprovalRequests = () => {
   };
 
   const { data, isLoading, isError, error } = useQuery({
-    queryKey: ['approvalRequests', page, sortBy, filter],
-    queryFn: () => getApprovalRequests({ page, sortBy, filter }),
+    queryKey: ['approvalRequests', page, sortBy, filter, numberOfRows],
+    queryFn: () => getApprovalRequests({ page, sortBy, filter, numberOfRows }),
   });
 
   const approvalRequests = data?.approvalRequests || [];

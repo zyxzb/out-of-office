@@ -9,18 +9,19 @@ import {
   PaginationNext,
   PaginationPrevious,
 } from '../shadcn/components/ui/pagination';
-import { PAGE_SIZE } from '../utils/constants';
+import { useRowsStore } from '../store/selectRows-store';
 
 type PaginationProps = {
   count: number;
 };
 
 const Pagination = ({ count }: PaginationProps) => {
+  const { numberOfRows } = useRowsStore();
   const [searchParams, setSearchParams] = useSearchParams();
   const currentPage = !searchParams.get('page')
     ? 1
     : Number(searchParams.get('page'));
-  const pageCount = Math.ceil(count / PAGE_SIZE);
+  const pageCount = Math.ceil(count / numberOfRows);
 
   const nextPage = () => {
     const next = currentPage === pageCount ? currentPage : currentPage + 1;

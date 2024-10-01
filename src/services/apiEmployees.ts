@@ -1,5 +1,4 @@
 import supabase from './supabase';
-import { PAGE_SIZE } from '../utils/constants';
 
 export type Employee = {
   id: number;
@@ -31,10 +30,12 @@ export type Filter = {
 
 export async function getEmployees({
   page,
+  numberOfRows,
   sortBy,
   filter,
 }: {
   page: number;
+  numberOfRows: number;
   sortBy?: SortBy;
   filter?: Filter;
 }) {
@@ -76,8 +77,8 @@ export async function getEmployees({
   }
 
   if (page) {
-    const from = (page - 1) * PAGE_SIZE;
-    const to = from + PAGE_SIZE - 1;
+    const from = (page - 1) * numberOfRows;
+    const to = from + numberOfRows - 1;
     query = query.range(from, to);
   }
 
