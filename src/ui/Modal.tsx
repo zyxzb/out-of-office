@@ -17,7 +17,7 @@ type ModalProps = {
   dialogDescription?: string;
   icon?: JSX.Element;
   open?: boolean;
-  setOpen?: Dispatch<SetStateAction<boolean>>;
+  setOpen?: Dispatch<SetStateAction<boolean>> | ((isOpen: boolean) => void);
 };
 
 const Modal = ({

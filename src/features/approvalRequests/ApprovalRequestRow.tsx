@@ -1,6 +1,6 @@
 import { ApprovalRequest } from '../../services/apiApprovalRequests';
+import { TableCell, TableRow } from '../../shadcn/components/ui/table';
 // import RejectModal from '../../ui/RejectModal';
-import Table from '../../ui/Table';
 
 type ApprovalRequestProps = {
   approvalRequest: ApprovalRequest;
@@ -16,17 +16,17 @@ const ApprovalRequestRow = ({
   },
 }: ApprovalRequestProps) => {
   return (
-    <Table.Row>
-      <div>{approvalRequestId}</div>
-      <div>{approver}</div>
-      <div>{leave_request}</div>
-      <div>{status}</div>
-      <div>{comment}</div>
+    <TableRow>
+      <TableCell>{approvalRequestId}</TableCell>
+      <TableCell>{approver}</TableCell>
+      <TableCell>{leave_request}</TableCell>
+      <TableCell>{status}</TableCell>
+      <TableCell>{comment}</TableCell>
 
-      <div>
+      <TableCell className='flex justify-end gap-2'>
         {/* <RejectModal dialogTitle={`Reject request ${approvalRequestId}`} /> */}
-      </div>
-    </Table.Row>
+      </TableCell>
+    </TableRow>
   );
 };
 

@@ -48,7 +48,8 @@ export async function getEmployees({
       status,
       people_partner,
       photo,
-      out_of_office_balance
+      out_of_office_balance,
+      user_role
     `,
     { count: 'exact' },
   );

@@ -28,7 +28,7 @@ const DeleteModal = ({
   return (
     <Dialog open={open} onOpenChange={setOpen}>
       <DialogTrigger asChild>
-        <Button variant='destructive' className='flex w-full gap-1'>
+        <Button variant='destructive' className='w-max-w flex gap-1'>
           <HiTrash /> Delete
         </Button>
       </DialogTrigger>

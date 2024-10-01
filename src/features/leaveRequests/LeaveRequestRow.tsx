@@ -5,9 +5,9 @@ import CreateRequestForm from './CreateRequestForm';
 import useDeleteLeaveRequest from './useDeleteLeaveRequest';
 import useModal from '../../hooks/useModal';
 import { LeaveRequest } from '../../services/apiLeaveRequests';
+import { TableCell, TableRow } from '../../shadcn/components/ui/table';
 import DeleteModal from '../../ui/DeleteModal';
 import Modal from '../../ui/Modal';
-import Table from '../../ui/Table';
 
 type LeaveRequestProps = {
   request: LeaveRequest;
@@ -28,16 +28,16 @@ const LeaveRequestRow = ({ request }: LeaveRequestProps) => {
   const { closeModal, open, setOpen } = useModal();
 
   return (
-    <Table.Row>
-      <div>{requestId}</div>
-      <div>{employee}</div>
-      <div>{absence_reason}</div>
-      <div>{format(new Date(start_date), 'MMM dd yyyy')}</div>
-      <div>{format(new Date(end_date), 'MMM dd yyyy')}</div>
-      <div>{comment}</div>
-      <div>{status}</div>
+    <TableRow>
+      <TableCell>{requestId}</TableCell>
+      <TableCell>{employee}</TableCell>
+      <TableCell>{absence_reason}</TableCell>
+      <TableCell>{format(new Date(start_date), 'MMM dd yyyy')}</TableCell>
+      <TableCell>{format(new Date(end_date), 'MMM dd yyyy')}</TableCell>
+      <TableCell>{comment}</TableCell>
+      <TableCell>{status}</TableCell>
 
-      <div className='flex gap-2'>
+      <TableCell className='flex justify-end gap-2'>
         <Modal
           icon={<HiPencil />}
           buttonText='Edit'
@@ -52,8 +52,8 @@ const LeaveRequestRow = ({ request }: LeaveRequestProps) => {
           onDelete={() => deleteRequest(requestId)}
           isDeleting={isDeleting}
         />
-      </div>
-    </Table.Row>
+      </TableCell>
+    </TableRow>
   );
 };
 

@@ -3,12 +3,11 @@ import { HiPencil } from 'react-icons/hi2';
 
 import CreateProjectForm from './CreateProjectForm';
 import useDeleteProject from './useDeleteProject';
-// import { useModal } from '../../context/ModalContext';
 import useModal from '../../hooks/useModal';
 import { Project } from '../../services/apiProjects';
+import { TableCell, TableRow } from '../../shadcn/components/ui/table';
 import DeleteModal from '../../ui/DeleteModal';
 import Modal from '../../ui/Modal';
-import Table from '../../ui/Table';
 
 type ProjectRowProps = {
   project: Project;
@@ -29,16 +28,15 @@ const ProjectRow = ({ project }: ProjectRowProps) => {
   const { closeModal, open, setOpen } = useModal();
 
   return (
-    <Table.Row>
-      <Table.Cell>{projectId}</Table.Cell>
-      <Table.Cell>{project_type}</Table.Cell>
-      <Table.Cell>{format(new Date(start_date), 'MMM dd yyyy')}</Table.Cell>
-      <Table.Cell>{format(new Date(end_date), 'MMM dd yyyy')}</Table.Cell>
-      <Table.Cell>{project_manager}</Table.Cell>
-      <Table.Cell>{comment}</Table.Cell>
-      <Table.Cell>{status}</Table.Cell>
-
-      <div className='flex gap-2'>
+    <TableRow>
+      <TableCell>{projectId}</TableCell>
+      <TableCell>{project_type}</TableCell>
+      <TableCell>{format(new Date(start_date), 'MMM dd yyyy')}</TableCell>
+      <TableCell>{format(new Date(end_date), 'MMM dd yyyy')}</TableCell>
+      <TableCell>{project_manager}</TableCell>
+      <TableCell>{comment || '---'}</TableCell>
+      <TableCell>{status}</TableCell>
+      <TableCell className='flex justify-end gap-2'>
         <Modal
           icon={<HiPencil />}
           buttonText='Edit'
@@ -53,8 +51,8 @@ const ProjectRow = ({ project }: ProjectRowProps) => {
           onDelete={() => deleteProject(projectId)}
           isDeleting={isDeleting}
         />
-      </div>
-    </Table.Row>
+      </TableCell>
+    </TableRow>
   );
 };
 

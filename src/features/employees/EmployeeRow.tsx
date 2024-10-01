@@ -5,9 +5,9 @@ import CreateEmployeeForm from './CreateEmployeeForm';
 import useDeleteEmployee from './useDeleteEmployee';
 import useModal from '../../hooks/useModal';
 import { Employee } from '../../services/apiEmployees';
+import { TableCell, TableRow } from '../../shadcn/components/ui/table';
 import DeleteModal from '../../ui/DeleteModal';
 import Modal from '../../ui/Modal';
-import Table from '../../ui/Table';
 
 type EmployeeRowProps = {
   employee: Employee;
@@ -28,8 +28,8 @@ const EmployeeRow = ({ employee }: EmployeeRowProps) => {
   const { closeModal, open, setOpen } = useModal();
 
   return (
-    <Table.Row>
-      <div>
+    <TableRow>
+      <TableCell>
         <Link
           className='flex max-w-max items-center gap-2 hover:underline'
           to={`/employee/${employeeId}`}
@@ -38,12 +38,12 @@ const EmployeeRow = ({ employee }: EmployeeRowProps) => {
 
           {employeeId}
         </Link>
-      </div>
-      <div>{full_name}</div>
-      <div>{subdivision}</div>
-      <div>{position}</div>
-      <div>{status}</div>
-      <div>
+      </TableCell>
+      <TableCell>{full_name}</TableCell>
+      <TableCell>{subdivision}</TableCell>
+      <TableCell>{position}</TableCell>
+      <TableCell>{status}</TableCell>
+      <TableCell>
         <Link
           className='flex max-w-max items-center gap-2 hover:underline'
           to={`/employee/${people_partner}`}
@@ -51,10 +51,10 @@ const EmployeeRow = ({ employee }: EmployeeRowProps) => {
           <HiLink />
           {people_partner}
         </Link>
-      </div>
-      <div>{out_of_office_balance}</div>
+      </TableCell>
+      <TableCell>{out_of_office_balance}</TableCell>
 
-      <div className='flex gap-2'>
+      <TableCell className='flex justify-end gap-2'>
         <Modal
           icon={<HiPencil />}
           buttonText='Edit'
@@ -69,8 +69,8 @@ const EmployeeRow = ({ employee }: EmployeeRowProps) => {
           isDeleting={isDeleting}
           onDelete={() => deleteEmployee(employeeId)}
         />
-      </div>
-    </Table.Row>
+      </TableCell>
+    </TableRow>
   );
 };
 

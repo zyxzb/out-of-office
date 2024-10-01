@@ -1,6 +1,6 @@
 import { IoSunnyOutline, IoMoonOutline } from 'react-icons/io5';
 
-import { useThemeStore } from '../store/store';
+import { useThemeStore } from '../store/theme-store';
 
 const ToggleTheme = () => {
   const theme = useThemeStore((store) => store.theme);
