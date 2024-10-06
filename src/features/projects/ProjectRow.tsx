@@ -3,11 +3,10 @@ import { HiPencil } from 'react-icons/hi2';
 
 import CreateProjectForm from './CreateProjectForm';
 import useDeleteProject from './useDeleteProject';
-import useModal from '../../hooks/useModal';
 import { Project } from '../../services/apiProjects';
 import { TableCell, TableRow } from '../../shadcn/components/ui/table';
+import Modal from '../../ui/CCPModal';
 import DeleteModal from '../../ui/DeleteModal';
-import Modal from '../../ui/Modal';
 
 type ProjectRowProps = {
   project: Project;
@@ -25,7 +24,6 @@ const ProjectRow = ({ project }: ProjectRowProps) => {
   } = project;
 
   const { isDeleting, deleteProject } = useDeleteProject();
-  const { closeModal, open, setOpen } = useModal();
 
   return (
     <TableRow>
@@ -37,14 +35,13 @@ const ProjectRow = ({ project }: ProjectRowProps) => {
       <TableCell>{comment || '---'}</TableCell>
       <TableCell>{status}</TableCell>
       <TableCell className='flex justify-end gap-2'>
-        <Modal
-          icon={<HiPencil />}
-          buttonText='Edit'
-          dialogTitle={`Edit Project ${projectId}`}
-          open={open}
-          setOpen={setOpen}
-        >
-          <CreateProjectForm project={project} closeModal={closeModal} />
+        <Modal>
+          <Modal.Trigger>
+            <HiPencil /> Edit
+          </Modal.Trigger>
+          <Modal.Content dialogTitle={`Edit Project ${projectId}`}>
+            <CreateProjectForm project={project} />
+          </Modal.Content>
         </Modal>
         <DeleteModal
           dialogTitle={`Delete Project ${projectId}`}

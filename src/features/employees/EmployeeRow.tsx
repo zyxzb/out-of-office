@@ -3,11 +3,10 @@ import { Link } from 'react-router-dom';
 
 import CreateEmployeeForm from './CreateEmployeeForm';
 import useDeleteEmployee from './useDeleteEmployee';
-import useModal from '../../hooks/useModal';
 import { Employee } from '../../services/apiEmployees';
 import { TableCell, TableRow } from '../../shadcn/components/ui/table';
+import Modal from '../../ui/CCPModal';
 import DeleteModal from '../../ui/DeleteModal';
-import Modal from '../../ui/Modal';
 
 type EmployeeRowProps = {
   employee: Employee;
@@ -25,7 +24,6 @@ const EmployeeRow = ({ employee }: EmployeeRowProps) => {
     out_of_office_balance,
   } = employee;
   const { isDeleting, deleteEmployee } = useDeleteEmployee();
-  const { closeModal, open, setOpen } = useModal();
 
   return (
     <TableRow>
@@ -55,17 +53,16 @@ const EmployeeRow = ({ employee }: EmployeeRowProps) => {
       <TableCell>{out_of_office_balance}</TableCell>
 
       <TableCell className='flex justify-end gap-2'>
-        <Modal
-          icon={<HiPencil />}
-          buttonText='Edit'
-          dialogTitle={`Edit Employee ${employeeId}`}
-          open={open}
-          setOpen={setOpen}
-        >
-          <CreateEmployeeForm employee={employee} closeModal={closeModal} />
+        <Modal>
+          <Modal.Trigger>
+            <HiPencil /> Edit
+          </Modal.Trigger>
+          <Modal.Content dialogTitle={`Edit Employee ${employeeId}`}>
+            <CreateEmployeeForm employee={employee} />
+          </Modal.Content>
         </Modal>
         <DeleteModal
-          dialogTitle='Delete Employee'
+          dialogTitle={`Delete Employee ${employeeId}`}
           isDeleting={isDeleting}
           onDelete={() => deleteEmployee(employeeId)}
         />
