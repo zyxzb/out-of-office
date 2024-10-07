@@ -1,12 +1,19 @@
 import { useState } from 'react';
 
 import LoginForm from '../features/authentication/LoginForm';
+import useClickOutside from '../hooks/useClickOutside';
 import { Button } from '../shadcn/components/ui/button';
 import { cn } from '../shadcn/lib/utils';
 import Heading from '../ui/Heading';
 
 const Login = () => {
   const [show, setShow] = useState(false);
+
+  const close = () => {
+    setShow(false);
+  };
+
+  const { ref } = useClickOutside<HTMLDivElement>(close);
 
   return (
     <div className='grid h-screen place-content-center'>
@@ -15,6 +22,7 @@ const Login = () => {
         <LoginForm />
       </div>
       <div
+        ref={ref}
         className={cn(
           `absolute left-1/2 flex -translate-x-1/2 flex-col gap-2 border transition-all ${show ? 'translate-y-0' : '-translate-y-full'} w-[200px]`,
         )}
