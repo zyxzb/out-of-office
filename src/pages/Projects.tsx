@@ -11,7 +11,7 @@ const Projects = () => {
       <ProjectsTableOperations />
       <ProjectTable />
       <Modal>
-        <Modal.Trigger>Add new project</Modal.Trigger>
+        <Modal.Trigger className='max-w-max'>Add new project</Modal.Trigger>
         <Modal.Content
           dialogTitle='New Project'
           dialogDescription='This action will create a new project'

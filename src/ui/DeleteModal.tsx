@@ -12,14 +12,14 @@ import {
   DialogTrigger,
 } from '../shadcn/components/ui/dialog';
 
-type DeleteEditModalProps = {
-  dialogTitle: string;
+export type DeleteEditModalProps = {
+  deleteDialogTitle: string;
   onDelete: () => void;
   isDeleting: boolean;
 };
 
 const DeleteModal = ({
-  dialogTitle,
+  deleteDialogTitle,
   onDelete,
   isDeleting,
 }: DeleteEditModalProps) => {
@@ -35,7 +35,7 @@ const DeleteModal = ({
 
       <DialogContent>
         <DialogHeader>
-          <DialogTitle>{dialogTitle}</DialogTitle>
+          <DialogTitle>{deleteDialogTitle}</DialogTitle>
           <DialogDescription>
             Are you sure you want to delete this permanently? This action cannot
             be undone.

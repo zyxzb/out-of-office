@@ -230,14 +230,23 @@ const CreateProjectForm = ({ project, closeModal }: ProjectRowProps) => {
           className='cursor-pointer hover:opacity-80'
         />
       </FormRow>
-
-      <Button
-        type='submit'
-        className='max-w-max px-10'
-        disabled={isCreating || isEditing}
-      >
-        {isCreating ? 'Creating...' : isEditSession ? 'Edit' : 'Create'}
-      </Button>
+      <div className='flex gap-2'>
+        <Button
+          type='submit'
+          className='max-w-max px-10'
+          disabled={isCreating || isEditing}
+        >
+          {isCreating ? 'Creating...' : isEditSession ? 'Edit' : 'Create'}
+        </Button>
+        <Button
+          type='button'
+          variant='destructive'
+          className='max-w-max px-10'
+          onClick={closeModal}
+        >
+          Close
+        </Button>
+      </div>
     </form>
   );
 };

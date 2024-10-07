@@ -1,13 +1,10 @@
 import { format } from 'date-fns';
-import { HiPencil } from 'react-icons/hi2';
 
 import CreateRequestForm from './CreateRequestForm';
 import useDeleteLeaveRequest from './useDeleteLeaveRequest';
-import useModal from '../../hooks/useModal';
 import { LeaveRequest } from '../../services/apiLeaveRequests';
 import { TableCell, TableRow } from '../../shadcn/components/ui/table';
-import DeleteModal from '../../ui/DeleteModal';
-import Modal from '../../ui/Modal';
+import Dropdown from '../../ui/Dropdown';
 
 type LeaveRequestProps = {
   request: LeaveRequest;
@@ -25,7 +22,6 @@ const LeaveRequestRow = ({ request }: LeaveRequestProps) => {
   } = request;
 
   const { isDeleting, deleteRequest } = useDeleteLeaveRequest();
-  const { closeModal, open, setOpen } = useModal();
 
   return (
     <TableRow>
@@ -37,21 +33,15 @@ const LeaveRequestRow = ({ request }: LeaveRequestProps) => {
       <TableCell>{comment}</TableCell>
       <TableCell>{status}</TableCell>
 
-      <TableCell className='flex justify-end gap-2'>
-        <Modal
-          icon={<HiPencil />}
-          buttonText='Edit'
+      <TableCell className='flex justify-end'>
+        <Dropdown
           dialogTitle={`Edit Request ${requestId}`}
-          open={open}
-          setOpen={setOpen}
-        >
-          <CreateRequestForm request={request} closeModal={closeModal} />
-        </Modal>
-        <DeleteModal
-          dialogTitle='Delete Request'
+          deleteDialogTitle='Delete Request'
           onDelete={() => deleteRequest(requestId)}
           isDeleting={isDeleting}
-        />
+        >
+          <CreateRequestForm request={request} />
+        </Dropdown>
       </TableCell>
     </TableRow>
   );

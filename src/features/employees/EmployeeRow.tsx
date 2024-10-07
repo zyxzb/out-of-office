@@ -1,13 +1,11 @@
-import { HiPencil, HiLink } from 'react-icons/hi2';
+import { HiLink } from 'react-icons/hi2';
 import { Link } from 'react-router-dom';
 
 import CreateEmployeeForm from './CreateEmployeeForm';
 import useDeleteEmployee from './useDeleteEmployee';
 import { Employee } from '../../services/apiEmployees';
 import { TableCell, TableRow } from '../../shadcn/components/ui/table';
-import Modal from '../../ui/CCPModal';
-import DeleteModal from '../../ui/DeleteModal';
-
+import Dropdown from '../../ui/Dropdown';
 type EmployeeRowProps = {
   employee: Employee;
 };
@@ -52,20 +50,15 @@ const EmployeeRow = ({ employee }: EmployeeRowProps) => {
       </TableCell>
       <TableCell>{out_of_office_balance}</TableCell>
 
-      <TableCell className='flex justify-end gap-2'>
-        <Modal>
-          <Modal.Trigger>
-            <HiPencil /> Edit
-          </Modal.Trigger>
-          <Modal.Content dialogTitle={`Edit Employee ${employeeId}`}>
-            <CreateEmployeeForm employee={employee} />
-          </Modal.Content>
-        </Modal>
-        <DeleteModal
-          dialogTitle={`Delete Employee ${employeeId}`}
+      <TableCell className='flex justify-end'>
+        <Dropdown
+          dialogTitle={`Edit Employee ${employeeId}`}
+          deleteDialogTitle={`Delete Employee ${employeeId}`}
           isDeleting={isDeleting}
           onDelete={() => deleteEmployee(employeeId)}
-        />
+        >
+          <CreateEmployeeForm employee={employee} />
+        </Dropdown>
       </TableCell>
     </TableRow>
   );

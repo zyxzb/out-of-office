@@ -11,7 +11,7 @@ const Employees = () => {
       <EmployeesTableOperations />
       <EmployeeTable />
       <Modal>
-        <Modal.Trigger>Add new employee</Modal.Trigger>
+        <Modal.Trigger className='max-w-max'>Add new employee</Modal.Trigger>
         <Modal.Content dialogTitle='Create new employee'>
           <CreateEmployeeForm />
         </Modal.Content>

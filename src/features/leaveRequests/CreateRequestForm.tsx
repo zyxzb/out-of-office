@@ -215,14 +215,23 @@ const CreateRequestForm = ({ request, closeModal }: CreateRequestForm) => {
           {...register('comment', { required: 'Comment is required' })}
         />
       </FormRow>
-
-      <Button
-        type='submit'
-        className='max-w-max px-10'
-        disabled={isCreating || isEditing}
-      >
-        {isCreating ? 'Creating...' : isEditSession ? 'Edit' : 'Create'}
-      </Button>
+      <div className='flex gap-2'>
+        <Button
+          type='submit'
+          className='max-w-max px-10'
+          disabled={isCreating || isEditing}
+        >
+          {isCreating ? 'Creating...' : isEditSession ? 'Edit' : 'Create'}
+        </Button>
+        <Button
+          type='button'
+          variant='destructive'
+          className='max-w-max px-10'
+          onClick={closeModal}
+        >
+          Close
+        </Button>
+      </div>
     </form>
   );
 };

@@ -1,12 +1,10 @@
 import { format } from 'date-fns';
-import { HiPencil } from 'react-icons/hi2';
 
 import CreateProjectForm from './CreateProjectForm';
 import useDeleteProject from './useDeleteProject';
 import { Project } from '../../services/apiProjects';
 import { TableCell, TableRow } from '../../shadcn/components/ui/table';
-import Modal from '../../ui/CCPModal';
-import DeleteModal from '../../ui/DeleteModal';
+import Dropdown from '../../ui/Dropdown';
 
 type ProjectRowProps = {
   project: Project;
@@ -34,20 +32,15 @@ const ProjectRow = ({ project }: ProjectRowProps) => {
       <TableCell>{project_manager}</TableCell>
       <TableCell>{comment || '---'}</TableCell>
       <TableCell>{status}</TableCell>
-      <TableCell className='flex justify-end gap-2'>
-        <Modal>
-          <Modal.Trigger>
-            <HiPencil /> Edit
-          </Modal.Trigger>
-          <Modal.Content dialogTitle={`Edit Project ${projectId}`}>
-            <CreateProjectForm project={project} />
-          </Modal.Content>
-        </Modal>
-        <DeleteModal
-          dialogTitle={`Delete Project ${projectId}`}
-          onDelete={() => deleteProject(projectId)}
+      <TableCell className='flex justify-end'>
+        <Dropdown
+          dialogTitle={`Edit Project ${projectId}`}
+          deleteDialogTitle={`Delete Project ${projectId}`}
           isDeleting={isDeleting}
-        />
+          onDelete={() => deleteProject(projectId)}
+        >
+          <CreateProjectForm project={project} />
+        </Dropdown>
       </TableCell>
     </TableRow>
   );

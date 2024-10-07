@@ -18,6 +18,7 @@ import {
   DialogTitle,
   DialogTrigger,
 } from '../shadcn/components/ui/dialog';
+import { cn } from '../shadcn/lib/utils';
 
 type ModalType = {
   open: boolean;
@@ -48,10 +49,16 @@ const Modal = ({ children }: { children: ReactNode }) => {
   );
 };
 
-const Trigger = ({ children }: { children: ReactNode }) => {
+const Trigger = ({
+  children,
+  className,
+}: {
+  children: ReactNode;
+  className?: string;
+}) => {
   return (
     <DialogTrigger asChild>
-      <Button className='flex max-w-max gap-1'>{children}</Button>
+      <Button className={cn(`flex gap-1 ${className}`)}>{children}</Button>
     </DialogTrigger>
   );
 };
