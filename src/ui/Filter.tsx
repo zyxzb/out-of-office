@@ -16,6 +16,7 @@ const Filter = ({ filterField, options }: FilterProps) => {
 
   const handleClick = (value: string) => {
     searchParams.set(filterField, value);
+    searchParams.set('page', '1');
     setSearchParams(searchParams);
   };
 
