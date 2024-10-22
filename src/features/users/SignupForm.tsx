@@ -1,12 +1,13 @@
+import { forwardRef } from 'react';
 import { useForm, SubmitHandler } from 'react-hook-form';
 
-import useSignup from './useSignup';
 import { SignupProps } from '../../services/apiAuth';
 import { Button } from '../../shadcn/components/ui/button';
 import { Input } from '../../shadcn/components/ui/input';
 import FormRow from '../../ui/FormRow';
+import useSignup from '../authentication/useSignup';
 
-const SignupForm = () => {
+const SignupForm = forwardRef<HTMLInputElement>((props, ref) => {
   const { signup, isLoading } = useSignup();
 
   const {
@@ -37,7 +38,8 @@ const SignupForm = () => {
   return (
     <form
       onSubmit={handleSubmit(onSubmit)}
-      className='flex max-w-[340px] flex-col gap-5'
+      className='flex max-w-[400px] flex-col gap-5'
+      {...props}
     >
       <FormRow label='Full name' error={errors?.fullName?.message}>
         <Input
@@ -60,6 +62,7 @@ const SignupForm = () => {
               message: 'Provide a valid email address',
             },
           })}
+          ref={ref}
         />
       </FormRow>
       <FormRow label='Password' error={errors?.password?.message}>
@@ -82,6 +85,6 @@ const SignupForm = () => {
       </Button>
     </form>
   );
-};
+});
 
 export default SignupForm;

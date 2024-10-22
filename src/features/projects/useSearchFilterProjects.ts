@@ -31,8 +31,6 @@ const useSearchFilterProjects = () => {
     queryFn: () => getProjects({ page, sortBy, filter, numberOfRows }),
   });
 
-  console.log(data);
-
   const projects = data?.projects || [];
   const count = data?.count || 0;
 

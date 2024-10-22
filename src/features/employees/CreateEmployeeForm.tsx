@@ -1,5 +1,6 @@
 import { useForm, SubmitHandler, Controller } from 'react-hook-form';
 
+import SelectRole from './SelectRole';
 import useCreateEmployee from './useCreateEmployee';
 import useEditEmployee from './useEditEmployee';
 import { Employee } from '../../services/apiEmployees';
@@ -29,15 +30,17 @@ const CreateEmployeeForm = ({ employee, closeModal }: EmployeeRowProps) => {
   } = useForm<Employee>({
     defaultValues: isEditSession
       ? // edit later default select
-        { ...employee, people_partner: undefined }
+        { ...employee }
       : {
           full_name: '',
+          email: '',
           subdivision: '',
           position: '',
           status: '',
           people_partner: undefined,
           photo: '',
           out_of_office_balance: undefined,
+          user_role: '',
         },
   });
 
@@ -72,6 +75,14 @@ const CreateEmployeeForm = ({ employee, closeModal }: EmployeeRowProps) => {
           })}
         />
       </FormRow>
+      <FormRow label='Email' error={errors?.email?.message}>
+        <Input
+          id='email'
+          {...register('email', {
+            required: 'Email name is required',
+          })}
+        />
+      </FormRow>
       <FormRow label='Subdivision' error={errors?.subdivision?.message}>
         <Input
           id='subdivision'
@@ -88,6 +99,23 @@ const CreateEmployeeForm = ({ employee, closeModal }: EmployeeRowProps) => {
           })}
         />
       </FormRow>
+
+      <Controller
+        name='user_role'
+        control={control}
+        rules={{ required: 'User role is required' }}
+        render={({ field, fieldState: { error } }) => (
+          <div>
+            <SelectRole
+              selectedStatus={field.value}
+              setSelectedStatus={(item) => field.onChange(item)}
+            />
+            {error && (
+              <span className='text-xs text-red-500'>{error.message}</span>
+            )}
+          </div>
+        )}
+      />
 
       <Controller
         name='people_partner'

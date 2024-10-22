@@ -22,6 +22,9 @@ const useEditEmployee = () => {
       queryClient.invalidateQueries({
         queryKey: ['employees'],
       });
+      queryClient.invalidateQueries({
+        queryKey: ['employee-role'],
+      });
       navigate('/employees');
     },
     onError: (err) => toast.error(err.message),

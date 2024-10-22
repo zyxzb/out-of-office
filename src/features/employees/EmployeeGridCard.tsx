@@ -10,7 +10,7 @@ const EmployeeGridCard = ({
   valueStyles,
 }: EmployeeGridCardProps) => {
   return (
-    <div className='relative grid place-items-center border py-14 transition-[border-color]'>
+    <div className='relative grid place-items-center overflow-x-auto border py-14 transition-[border-color]'>
       <p className='absolute left-2 top-2 text-sm opacity-50'>{name}</p>
       {valueStyles ? <p className={valueStyles}>{value}</p> : <p>{value}</p>}
     </div>

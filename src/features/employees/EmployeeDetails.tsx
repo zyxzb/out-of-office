@@ -20,6 +20,8 @@ const EmployeeDetails = () => {
     status,
     people_partner,
     out_of_office_balance,
+    email,
+    user_role,
   } = employee;
 
   return (
@@ -47,6 +49,8 @@ const EmployeeDetails = () => {
           name='Available day-offs:'
           value={out_of_office_balance}
         />
+        <EmployeeGridCard name='Email:' value={email} />
+        <EmployeeGridCard name='Role:' value={user_role} />
       </div>
     </>
   );

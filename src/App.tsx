@@ -42,7 +42,7 @@ const App = () => {
               <Route path='projects' element={<Projects />} />
               <Route path='leave-requests' element={<LeaveRequests />} />
               <Route path='approval-requests' element={<ApprovalRequests />} />
-              <Route path='users' element={<Users />} />
+              <Route path='users' element={<Users roles={['admin']} />} />
               <Route path='employee/:employeeId' element={<Employee />} />
             </Route>
             <Route path='login' element={<Login />} />

@@ -6,6 +6,7 @@ import useDeleteEmployee from './useDeleteEmployee';
 import { Employee } from '../../services/apiEmployees';
 import { TableCell, TableRow } from '../../shadcn/components/ui/table';
 import Dropdown from '../../ui/Dropdown';
+
 type EmployeeRowProps = {
   employee: Employee;
 };

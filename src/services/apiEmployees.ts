@@ -10,6 +10,8 @@ export type Employee = {
   people_partner: number;
   photo?: string;
   out_of_office_balance: number;
+  user_role: string;
+  email: string;
 };
 
 export type PaginatedEmployees = {
@@ -50,7 +52,8 @@ export async function getEmployees({
       people_partner,
       photo,
       out_of_office_balance,
-      user_role
+      user_role,
+      email
     `,
     { count: 'exact' },
   );
@@ -179,4 +182,24 @@ export async function getAllEmployees() {
   }
 
   return data;
+}
+
+export async function getEmployeeRoleByEmail(email: string) {
+  if (!email) {
+    throw new Error('Employee email could not be found');
+  }
+
+  // find first user with email
+  const { data, error } = await supabase
+    .from('Employees')
+    .select('*')
+    .eq('email', email)
+    .single();
+
+  if (error) {
+    console.log(error);
+    throw new Error('Employees could not be loaded');
+  }
+
+  return data.user_role;
 }
