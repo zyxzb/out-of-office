@@ -2,6 +2,7 @@ import React from 'react';
 import { useEffect } from 'react';
 import { useNavigate } from 'react-router-dom';
 
+import PageLoader from './PageLoader';
 import useUser from '../features/authentication/useUser';
 
 const ProtectedRoute = ({ children }: { children: React.ReactNode }) => {
@@ -12,12 +13,7 @@ const ProtectedRoute = ({ children }: { children: React.ReactNode }) => {
     if (!isAuthenticated && !isLoading) navigate('/login');
   }, [isAuthenticated, navigate, isLoading]);
 
-  if (isLoading)
-    return (
-      <div className='grid h-screen w-full place-items-center'>
-        <p>Loading...</p>
-      </div>
-    );
+  if (isLoading) return <PageLoader />;
 
   return children;
 };
