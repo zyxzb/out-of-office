@@ -20,6 +20,7 @@ const Employees = lazyMinLoadTime(() => import('./pages/Employees'));
 const LeaveRequests = lazyMinLoadTime(() => import('./pages/LeaveRequests'));
 const Projects = lazyMinLoadTime(() => import('./pages/Projects'));
 const Users = lazyMinLoadTime(() => import('./pages/Users'));
+const Calendar = lazyMinLoadTime(() => import('./pages/Calendar'));
 
 const queryClient = new QueryClient({
   defaultOptions: {
@@ -53,6 +54,7 @@ const App = () => {
                 />
                 <Route path='users' element={<Users roles={['admin']} />} />
                 <Route path='employee/:employeeId' element={<Employee />} />
+                <Route path='calendar/' element={<Calendar />} />
               </Route>
               <Route path='login' element={<Login />} />
               <Route path='*' element={<NotFound />} />

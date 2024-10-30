@@ -23,4 +23,8 @@ export const navLinks = [
     name: 'Users',
     link: '/users',
   },
+  {
+    name: 'Calendar',
+    link: '/calendar',
+  },
 ];
