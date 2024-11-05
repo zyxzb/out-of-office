@@ -191,3 +191,34 @@ export async function editLeaveRequest(leaveRequests: LeaveRequest) {
   }
   return data;
 }
+
+// for testing
+
+export async function getAcceptedApprovalRequests() {
+  const { data, error } = await supabase
+    .from('LeaveRequests')
+    .select(
+      `
+      created_at,
+      employee!inner(full_name),
+      absence_reason,
+      start_date,
+      end_date,
+      comment,
+      status`,
+    )
+    .eq('status', 'accepted');
+
+  if (error) {
+    console.log(error);
+    throw new Error('LeaveRequests could not be loaded');
+  }
+
+  // eslint-disable-next-line @typescript-eslint/no-explicit-any
+  const requests = data.map((request: any) => ({
+    ...request,
+    employee: request.employee.full_name,
+  }));
+
+  return requests;
+}

@@ -4,6 +4,7 @@ import useEmployeeAuthWithRole from '../features/authentication/useEmployeeAuthW
 import CreateUserInfo from '../features/users/CreateUserInfo';
 import SignupForm from '../features/users/SignupForm';
 import Heading from '../ui/Heading';
+import SmallText from '../ui/SmallText';
 
 type UsersProps = {
   roles: string[];
@@ -29,7 +30,9 @@ const Users = ({ roles }: UsersProps) => {
 
   return (
     <>
-      <Heading as='h1'>Create a new user (only for the role "admin")</Heading>
+      <Heading as='h1'>
+        Create a new user <SmallText>(only for the role "admin")</SmallText>
+      </Heading>
       <div className='my-10 grid grid-cols-1 gap-10 md:grid-cols-2'>
         <CreateUserInfo handleFocusRef={handleFocusRef} />
         <SignupForm ref={inputRef} />

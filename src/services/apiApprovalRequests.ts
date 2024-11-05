@@ -1,12 +1,36 @@
 import supabase from './supabase';
 
+// id: number;
+// created_at: Date;
+// employee: number;
+// absence_reason: string;
+// start_date: Date;
+// end_date: Date;
+// comment: string;
+// status: string;
+
+// approver: string;
+// leave_request: number;
+
 export type ApprovalRequest = {
+  // id: number;
+  // created_at: Date;
+  // approver: string;
+  // leave_request: number;
+  // status: string;
+  // comment: number;
+
   id: number;
   created_at: Date;
+  employee: number;
+  absence_reason: string;
+  start_date: Date;
+  end_date: Date;
+  comment: string;
+  status: string;
+
   approver: string;
   leave_request: number;
-  status: string;
-  comment: number;
 };
 
 export type PaginatedProjects = {
@@ -40,10 +64,14 @@ export async function getApprovalRequests({
     `
       id,
       created_at,
-      approver!inner(full_name),
-      leave_request,
+      employee,
+      absence_reason,
+      start_date,
+      end_date,
+      comment,
       status,
-      comment
+      leave_request,
+      approver!inner(full_name)
     `,
     { count: 'exact' },
   );

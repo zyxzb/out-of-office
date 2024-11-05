@@ -31,8 +31,6 @@ const useSearchFilterLeaveRequests = () => {
     queryFn: () => getRequests({ page, sortBy, filter, numberOfRows }),
   });
 
-  console.log(data);
-
   const requests = data?.requests || [];
   const count = data?.count || 0;
 

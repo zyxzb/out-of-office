@@ -1,6 +1,9 @@
 import { GoPeople, GoGitPullRequest } from 'react-icons/go';
 import { GrProjects } from 'react-icons/gr';
-import { MdOutlineApproval } from 'react-icons/md';
+import {
+  MdCalendarMonth,
+  //  MdOutlineApproval
+} from 'react-icons/md';
 import { Link } from 'react-router-dom';
 
 const DashboardCards = () => {
@@ -30,12 +33,20 @@ const DashboardCards = () => {
           <GoGitPullRequest size={20} /> Leave Request
         </span>
       </Link>
-      <Link
+      {/* <Link
         to='/approval-requests'
         className='grid h-20 w-full place-items-center rounded border transition-[border-color] hover:underline lg:h-60'
       >
         <span className='flex items-center gap-2'>
           <MdOutlineApproval size={20} /> Approval Requests
+        </span>
+      </Link> */}
+      <Link
+        to='/calendar'
+        className='grid h-20 w-full place-items-center rounded border transition-[border-color] hover:underline lg:h-60'
+      >
+        <span className='flex items-center gap-2'>
+          <MdCalendarMonth size={20} /> Calendar
         </span>
       </Link>
     </section>

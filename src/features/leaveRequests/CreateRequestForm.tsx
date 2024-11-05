@@ -38,7 +38,7 @@ const CreateRequestForm = ({ request, closeModal }: CreateRequestForm) => {
     trigger,
   } = useForm<LeaveRequest>({
     defaultValues: isEditSession
-      ? { ...request, employee: request?.id }
+      ? { ...request }
       : {
           employee: undefined,
           absence_reason: '',

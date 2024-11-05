@@ -12,13 +12,13 @@ export const navLinks = [
     link: '/projects',
   },
   {
-    name: 'Leave Requests',
+    name: 'Requests',
     link: '/leave-requests',
   },
-  {
-    name: '(New) Requests List',
-    link: '/approval-requests',
-  },
+  // {
+  //   name: '(New) Requests List',
+  //   link: '/approval-requests',
+  // },
   {
     name: 'Users',
     link: '/users',
